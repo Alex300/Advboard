@@ -22,7 +22,7 @@ unset($this->formElements);
 if(cot::$usr['auth_upload'] && cot_module_active('files') && cot_auth('files', 'a', 'W')) {
     array_insert($formElements, 'text', array ('files' => array (
             'element' => cot_files_filebox('advert', intval($advert->id), '', 'all'),
-            'title' => cot::$L['files_attachments'],
+            'label' => cot::$L['files_attachments'],
         ))
     );
 }
@@ -54,13 +54,13 @@ echo $this->breadcrumbs
                 if($fldName == 'hidden') continue;
 
                 $elClass = $elementClass;
-                if(empty($element['title'])) $elClass .= ' col-md-offset-3';
+                if(empty($element['label'])) $elClass .= ' col-md-offset-3';
 
                 ?>
                 <div class="form-group <?=cot_formGroupClass($fldName)?>">
-                    <?php if(!empty($element['title'])) { ?>
+                    <?php if(!empty($element['label'])) { ?>
                     <label class="<?=$labelClass?> control-label">
-                        <?=$element['title']?>
+                        <?=$element['label']?>
                         <?php if(!empty($element['required'])) echo ' *';?>
                         :
                     </label>
