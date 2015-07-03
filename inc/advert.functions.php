@@ -245,7 +245,7 @@ function advert_compare_renderRow($compare, $field, $params = array()){
     static $modelFields = false;
     static $counter = 0;
 
-    if(empty($modelFields)) $modelFields = advert_model_Advert::getFields();
+    if(empty($modelFields)) $modelFields = advert_model_Advert::fields();
 
 //    if(empty($modelFields[$field]) && !in_array($field, $predifined)) return '';
 

@@ -619,7 +619,7 @@ class advert_controller_Main
                     if(cot_plugin_active('regioncity')) {
                         $advert->setValidator('city', function($value) {
                             $value = (int)$value;
-                            if($value == 0) return cot::$L['field_required'].': '.advert_model_Advert::getFieldLabel('city');
+                            if($value == 0) return cot::$L['field_required'].': '.advert_model_Advert::fieldLabel('city');
                             return true;
                         });
                     } else {
@@ -783,52 +783,52 @@ class advert_controller_Main
             ),
             'category' => array(
                 'element' => cot_selectbox_structure('advert', $advert->category, 'category'),
-                'title' => $advert->getFieldLabel('category')
+                'title' => advert_model_Advert::fieldLabel('category')
             ),
             'price' => array(
                 'element' => cot_inputbox('text', 'price', $price),
-                'title' => $advert->getFieldLabel('price'),
+                'title' => advert_model_Advert::fieldLabel('price'),
                 'hint' => cot::$L['advert_price_hint'],
             ),
             'title' => array(
                 'element' => cot_inputbox('text', 'title', $advert->rawValue('title')),
                 'required' => true,
-                'title' => $advert->getFieldLabel('title')
+                'title' => advert_model_Advert::fieldLabel('title')
             ),
             'description' => array(
                 'element' => cot_inputbox('text', 'description', $advert->rawValue('description')),
-                'title' => $advert->getFieldLabel('description')
+                'title' => advert_model_Advert::fieldLabel('description')
             ),
             'text' => array(
                 'element' => cot_textarea('text', $advert->rawValue('text'), 5, 120, '', $editor),
-                'title' => $advert->getFieldLabel('text')
+                'title' => advert_model_Advert::fieldLabel('text')
             ),
             'person' => array(
                 'element' => cot_inputbox('text', 'person', $advert->rawValue('person'),
                     array('class' => 'form-control', 'placeholder' => $placeHolder_Person)),
-                'title' => $advert->getFieldLabel('person'),
+                'title' => advert_model_Advert::fieldLabel('person'),
                 'required' => (cot::$usr['id'] == 0),
             ),
             'email' => array(
                 'element' => cot_inputbox('text', 'email', $advert->rawValue('email'),
                     array('class' => 'form-control', 'placeholder' => $placeHolder_Email)),
-                'title' => $advert->getFieldLabel('email')
+                'title' => advert_model_Advert::fieldLabel('email')
             ),
             'city' => array(
                 'element' => cot_inputbox('text', 'city_name', $advert->rawValue('city_name'),
                     array('class' => 'form-control', 'placeholder' => $placeHolder_City)),
-                'title' => $advert->getFieldLabel('city_name'),
+                'title' => advert_model_Advert::fieldLabel('city_name'),
                 'required' => $category['config']['city_require']
             ),
             'phone' => array(
                 'element' => cot_inputbox('text', 'phone', $advert->rawValue('phone'),
                     array('class' => 'form-control', 'placeholder' => $placeHolder_Phone)),
-                'title' => $advert->getFieldLabel('phone'),
+                'title' => advert_model_Advert::fieldLabel('phone'),
                 'required' => $category['config']['phone_require']
             ),
             'sticky' => array(
-                'element' => cot_checkbox($advert->sticky, 'sticky', $advert->getFieldLabel('sticky')),
-                'label' => $advert->getFieldLabel('sticky')
+                'element' => cot_checkbox($advert->sticky, 'sticky', advert_model_Advert::fieldLabel('sticky')),
+                'label' => advert_model_Advert::fieldLabel('sticky')
             ),
             'published' => array(
                 'element' => cot_checkbox($published, 'published', cot::$L['advert_published'].'?'),
@@ -836,15 +836,15 @@ class advert_controller_Main
             ),
             'begin' => array(
                 'element' => cot_selectbox_date($advert->begin, 'long','begin', $maxYear, $minYear),
-                'title' => $advert->getFieldLabel('begin')
+                'title' => advert_model_Advert::fieldLabel('begin')
             ),
             'expire' => array(
                 'element' => cot_selectbox_date($advert->expire, 'long','expire', $maxYear, $minYear),
-                'title' => $advert->getFieldLabel('expire')
+                'title' => advert_model_Advert::fieldLabel('expire')
             ),
             'sort' => array(
                 'element' => cot_selectbox_date($advert->sort, 'long','sort', $maxYear, $minYear),
-                'title' => $advert->getFieldLabel('sort')
+                'title' => advert_model_Advert::fieldLabel('sort')
             ),
             'period' => array(
                 'element' => cot_selectbox('', 'period', $periodItems, array(), false),
@@ -858,7 +858,7 @@ class advert_controller_Main
                 $formElements[$fName] = array(
                     'element' => cot_build_extrafields($fName, $exfld, $advert->rawValue($fName)),
                     'title' => isset(cot::$L['advert_'.$exfld['field_name'].'_title']) ?
-                        cot::$L['advert_'.$exfld['field_name'].'_title'] : $advert->getFieldLabel($fName)
+                        cot::$L['advert_'.$exfld['field_name'].'_title'] : advert_model_Advert::fieldLabel($fName)
                 );
             }
         }
