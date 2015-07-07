@@ -53,9 +53,10 @@ class advert_controller_User
 
         $title = '';
 
-        $crumbs = array(array(cot_url("users"), cot::$L['Users']));
+        $crumbs = array();
         if($uid != cot::$usr['id']) {
             cot::$out['subtitle'] = $title = cot::$L['advert_user_ads'].': '.cot_user_full_name($user);
+            $crumbs[] = array(cot_url("users"), cot::$L['Users']);
             $crumbs[] = array(cot_url("users", "m=details&id=".$user["user_id"]."&u=".$user["user_name"] ),
                 cot_user_full_name($user));
             $crumbs[] = cot::$L['advert_user_ads'];
@@ -63,7 +64,7 @@ class advert_controller_User
             $urlParams['uid'] = $user['user_id'];
         } else {
             cot::$out['subtitle'] = $title = cot::$L['advert_my_ads'];
-            $crumbs[] = array(cot_url('users', array('m'=>'details')), cot::$L['pro_title']);
+            $crumbs[] = array(cot_url('users', array('m'=>'details')), cot::$L['advert_my_page']);
             $crumbs[] = cot::$L['advert_my_ads'];
         }
 

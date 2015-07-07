@@ -51,6 +51,7 @@ $L['advert_moderated'] = 'Объявление проверено';
 $L['advert_moderator_filters'] = 'Фильтры модератора';
 $L['advert_my_adv'] = 'Мое объявление';
 $L['advert_my_ads'] = 'Мои объявления';
+$L['advert_my_page'] = 'Моя страница';
 $L['advert_new_comment'] = "Новый ответ на Ваше объявление.";
 $L['advert_no_title'] = 'Без названия';
 $L['advert_not_found'] = 'Объявление не найдено';
