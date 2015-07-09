@@ -1,17 +1,24 @@
 <?php
 /* ====================
 [BEGIN_COT_EXT]
-Hooks=admin.structure.first
+Hooks=global
 [END_COT_EXT]
 ==================== */
-
 /**
  * Ads board module for Cotonti Siena
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright (c) Portal30 Studio http://portal30.ru
  */
 defined('COT_CODE') or die('Wrong URL');
 
-$extension_structure[] = 'advert';
+if (!defined('COT_ADMIN') && !COT_AJAX){
+    require_once cot_incfile('advboard', 'module');
+
+    /**
+     * Send Expire notifications
+     */
+    advboard_controller_User::sendExpireNotify();
+}
+

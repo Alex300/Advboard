@@ -1,7 +1,7 @@
 /**
  * Ads board module for Cotonti Siena
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright (c) Portal30 Studio http://portal30.ru
  */
@@ -9,14 +9,14 @@
 /**
  * добавление к сравнению ajax
  */
-$( document ).on( 'change', 'input[type="checkbox"].advert_compare', function(e) {
+$( document ).on( 'change', 'input[type="checkbox"].advboard_compare', function(e) {
 
     var id = $(this).val();
     var x = $('input[name=x]').val();
-    var url = 'index.php?e=advert&m=compare&a=ajxAdd';
+    var url = 'index.php?e=advboard&m=compare&a=ajxAdd';
 
     if($(this).attr('checked') != 'checked'){
-        url = 'index.php?e=advert&m=compare&a=ajxDelete';
+        url = 'index.php?e=advboard&m=compare&a=ajxDelete';
     }
 
     $.post(url, { ids: id, x: x }, function(data) {
@@ -25,21 +25,21 @@ $( document ).on( 'change', 'input[type="checkbox"].advert_compare', function(e)
         }else{
             compareCnt = data.count;
             if(data.count > 0){
-                $('#advert_compare-widget').slideDown();
+                $('#advboard_compare-widget').slideDown();
 
                 $.each(data.removedIds, function( index, value ) {
-                    $('#advert_compare-widget #advert_compare-widget-row-'+value).remove();
-                    $('input.advert_compare[value="'+ value +'"]').removeAttr('checked');
+                    $('#advboard_compare-widget #advboard_compare-widget-row-'+value).remove();
+                    $('input.advboard_compare[value="'+ value +'"]').removeAttr('checked');
                 });
 
                 $.each(data.added, function( index, value ) {
 
-                    var container = $('#advert_compare-widget #advert_compare-widget-row-tpl').clone(),
+                    var container = $('#advboard_compare-widget #advboard_compare-widget-row-tpl').clone(),
                         info = container.children('.compare-widget-row-info'),
                         infoText = info.html(),
                         price = '';
 
-                    container.attr('id', 'advert_compare-widget-row-'+value.id).attr('class', 'compare-widget-row');
+                    container.attr('id', 'advboard_compare-widget-row-'+value.id).attr('class', 'compare-widget-row');
 
                     value.price = value.price || 0;
                     if(value.price > 0) price = value.priceFormatted;
@@ -56,7 +56,7 @@ $( document ).on( 'change', 'input[type="checkbox"].advert_compare', function(e)
                     if(value.price > 0) info.children('.compare-widget-row-price').show();
                     if(value.description != '') info.children('.compare-widget-row-description').show();
 
-                    container.appendTo('#advert_compare-widget-rows').slideDown();
+                    container.appendTo('#advboard_compare-widget-rows').slideDown();
                 });
 
                 if(compareCnt > 1){
@@ -66,10 +66,10 @@ $( document ).on( 'change', 'input[type="checkbox"].advert_compare', function(e)
                 }
 
             }else{
-                $('#advert_compare-widget .compare-widget-row').remove();
-                $('#advert_compare-widget').slideUp();
+                $('#advboard_compare-widget .compare-widget-row').remove();
+                $('#advboard_compare-widget').slideUp();
                 $('.add-to-compare').fadeOut();
-                $('input.advert_compare').removeAttr('checked');
+                $('input.advboard_compare').removeAttr('checked');
             }
         }
         $('.tooltip').remove();
@@ -84,7 +84,7 @@ $( document ).on( 'change', 'input[type="checkbox"].advert_compare', function(e)
     });
 });
 
-$( document ).on( 'click', '.advert_compare-widget-delete', function(e) {
+$( document ).on( 'click', '.advboard_compare-widget-delete', function(e) {
     e.preventDefault();
 
     var ids = '';
@@ -93,12 +93,12 @@ $( document ).on( 'click', '.advert_compare-widget-delete', function(e) {
         ids = 'all';
     }else{
         var id = $(this).parents('.compare-widget-row').attr('id');
-        id = id.replace('advert_compare-widget-row-', '');
+        id = id.replace('advboard_compare-widget-row-', '');
         ids = id;
     }
 
     var x = $('input[name=x]').val();
-    var url = 'index.php?e=advert&m=compare&a=ajxDelete';
+    var url = 'index.php?e=advboard&m=compare&a=ajxDelete';
 
     $.post(url, { ids: ids, x: x }, function(data) {
         if(data.error != ''){
@@ -106,11 +106,11 @@ $( document ).on( 'click', '.advert_compare-widget-delete', function(e) {
         }else{
             compareCnt = data.count;
             if(data.count > 0){
-                $('#advert_compare-widget').slideDown();
+                $('#advboard_compare-widget').slideDown();
 
                 $.each(data.removedIds, function( index, value ) {
-                    $('#advert_compare-widget #advert_compare-widget-row-'+value).remove();
-                    $('input.advert_compare[value="'+ value +'"]').removeAttr('checked');
+                    $('#advboard_compare-widget #advboard_compare-widget-row-'+value).remove();
+                    $('input.advboard_compare[value="'+ value +'"]').removeAttr('checked');
                 });
 
 //                var toCompareCount = $('input.compare[type="checkbox"]:checked').length;
@@ -121,10 +121,10 @@ $( document ).on( 'click', '.advert_compare-widget-delete', function(e) {
                 }
 
             }else{
-                $('#advert_compare-widget .compare-widget-row').remove();
-                $('#advert_compare-widget').slideUp();
+                $('#advboard_compare-widget .compare-widget-row').remove();
+                $('#advboard_compare-widget').slideUp();
                 $('.add-to-compare').fadeOut();
-                $('input.advert_compare').removeAttr('checked');
+                $('input.advboard_compare').removeAttr('checked');
             }
         }
         $('.tooltip').remove();
@@ -138,7 +138,6 @@ $( document ).on( 'click', '.advert_compare-widget-delete', function(e) {
 
 $(function() {
     $( ".add-compare-form" ).submit(function( e ) {
-//        var data = $(this).serialize();
         var toCompareCount = compareCnt + $(this).find('input.compare[type="checkbox"]:checked').length;
         if(toCompareCount < 1){
             e.preventDefault();

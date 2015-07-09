@@ -9,7 +9,7 @@
 
 //var_dump_($this->category);
 
-/** @var advert_model_Advert $advert */
+/** @var advboard_model_Advert $advert */
 $advert = $this->advert;
 
 $labelClass = 'col-xs-12 col-md-3';
@@ -21,7 +21,7 @@ unset($this->formElements);
 // Добавим виджет файлов, если необходимо
 if(cot::$usr['auth_upload'] && cot_module_active('files') && cot_auth('files', 'a', 'W')) {
     array_insert($formElements, 'text', array ('files' => array (
-            'element' => cot_files_filebox('advert', intval($advert->id), '', 'all'),
+            'element' => cot_files_filebox('advboard', intval($advert->id), '', 'all'),
             'label' => cot::$L['files_attachments'],
         ))
     );
@@ -34,8 +34,8 @@ echo $this->breadcrumbs
     <div class="<?=$elementClass?>">
         <h2 class="page" style="margin-top: 0;"><?=$this->page_title?></h2>
         <?php if($advert->id > 0) { ?>
-            <p><?=cot::$L['advert_id']?>: #<?=$advert->id?></p>
-            <p><?=cot::$L['Status']?>: <strong><?=cot::$L['advert_state_'.$advert->state]?></strong></p>
+            <p><?=cot::$L['advboard_id']?>: #<?=$advert->id?></p>
+            <p><?=cot::$L['Status']?>: <strong><?=cot::$L['advboard_state_'.$advert->state]?></strong></p>
         <?php
         }
         // Error and message handling
@@ -46,7 +46,7 @@ echo $this->breadcrumbs
 
 <div class="row">
     <div class="col-xs-12">
-        <form action="<?=$this->formAction?>" enctype="multipart/form-data" method="post" name="advert-form"
+        <form action="<?=$this->formAction?>" enctype="multipart/form-data" method="post" name="advboard-form"
               class="form-horizontal" role="form">
             <?php
             echo $formElements['hidden']['element'];
@@ -80,7 +80,7 @@ echo $this->breadcrumbs
                         <div class="<?=$elClass?>">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4"><?=$element['element']?></div>
-                                <div class="col-xs-12 col-sm-4"><?=cot::$L['advert_days']?></div>
+                                <div class="col-xs-12 col-sm-4"><?=cot::$L['advboard_days']?></div>
                             </div>
                         </div>
                     <?php } else { ?>

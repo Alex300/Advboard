@@ -2,7 +2,7 @@
 /**
  * Ads compare template
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright Portal30 Studio http://portal30.ru
  */
@@ -10,7 +10,7 @@
 
 global $cot_extrafields;
 
-/** @var advert_model_Advert[] $advertisement */
+/** @var advboard_model_Advert[] $advertisement */
 $advertisement = $this->advertisement;
 
 echo $this->breadcrumbs;
@@ -22,7 +22,7 @@ echo $this->breadcrumbs;
 $this->displayMessages();
 
 if ($this->totalitems == 0) { ?>
-<h4 class="margintop20 text-center text-muted"><?=cot::$L['advert_compare_none']?></h4>
+<h4 class="margintop20 text-center text-muted"><?=cot::$L['advboard_compare_none']?></h4>
 <?php
 
 } else {
@@ -36,13 +36,13 @@ if ($this->totalitems == 0) { ?>
         <?php foreach($advertisement as $advRow) { ?>
             <td class="text-center" style="width: 120px">
                 <div>
-                    <a class="red compare-delete" data-toggle="tooltip" title="<?=cot::$L['advert_compare_delete']?>"
-                       href="<?=cot_url('advert', array('m'=>'compare', 'a'=>'delete', 'ids'=>$advRow->id))?>">
+                    <a class="red compare-delete" data-toggle="tooltip" title="<?=cot::$L['advboard_compare_delete']?>"
+                       href="<?=cot_url('advboard', array('m'=>'compare', 'a'=>'delete', 'ids'=>$advRow->id))?>">
                         <span class="glyphicon glyphicon-remove"></span> <?=cot::$L['Delete']?>
                     </a>
                 </div>
-                <?php if(cot_module_active('files') && cot_files_count('advert',$advRow->id,'','images') > 0) {
-                    $file = cot_files_get('advert', $advRow->id, '');
+                <?php if(cot_module_active('files') && cot_files_count('advboard',$advRow->id,'','images') > 0) {
+                    $file = cot_files_get('advboard', $advRow->id, '');
                     $thumb = cot_files_thumb($file,120,90,'crop');
                     ?>
                     <img alt="<?=htmlspecialchars($advRow->title)?>" src="<?=$thumb?>" style="width: 120px"/>
@@ -69,9 +69,9 @@ if ($this->totalitems == 0) { ?>
      * Экстраполя
      * Если Вам удобнее - можно поля перечислять и в ручную
      */
-    if(!empty($cot_extrafields[cot::$db->advert])) {
+    if(!empty($cot_extrafields[cot::$db->advboard])) {
         // Extra fields for ads
-        foreach ($cot_extrafields[cot::$db->advert] as $exfld) {
+        foreach ($cot_extrafields[cot::$db->advboard] as $exfld) {
             $block  = advert_compare_renderRow($advertisement, $exfld['field_name']);
             if($block != '') echo $block;
         }

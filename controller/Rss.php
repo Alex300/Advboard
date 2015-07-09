@@ -4,14 +4,14 @@ defined('COT_CODE') or die('Wrong URL.');
 
 /**
  * Ads board module for Cotonti Siena
- *     advert_controller_Rss
+ *     advboard_controller_Rss
  *     Rss Controller class
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright (c) Portal30 Studio http://portal30.ru
  */
-class advert_controller_Rss
+class advboard_controller_Rss
 {
     public function indexAction() {
         global $structure;
@@ -21,29 +21,29 @@ class advert_controller_Rss
         $c = cot_import('c', 'G', 'TXT');
 
         if(!empty($c)) {
-            if(!isset($structure['advert'][$c])) cot_die_message(404, TRUE);
+            if(!isset($structure['advboard'][$c])) cot_die_message(404, TRUE);
 
-            list(cot::$usr['auth_read'], cot::$usr['auth_write'], cot::$usr['isadmin']) = cot_auth('advert', $c);
+            list(cot::$usr['auth_read'], cot::$usr['auth_write'], cot::$usr['isadmin']) = cot_auth('advboard', $c);
             cot_block(cot::$usr['auth_read']);
         }
 
-        $rss_title = cot::$L['advert_rss_feed'].cot::$cfg['maintitle'];
+        $rss_title = cot::$L['advboard_rss_feed'].cot::$cfg['maintitle'];
         $rss_link = cot::$cfg['mainurl'];
         $rss_description = cot::$cfg['subtitle'];
         $domain = cot::$sys['domain'];
 
         $condition = array(
-            array('state', advert_model_Advert::PUBLISHED),
+            array('state', advboard_model_Advert::PUBLISHED),
             array('begin', cot::$sys['now'], '<='),
             array('SQL', "expire = 0 OR expire > ".cot::$sys['now']),
         );
 
         if(!empty($c)) {
-            $rss_title = cot::$L['advert_rss_feed'].$structure['advert'][$c]['title'].' - '.cot::$cfg['maintitle'];
+            $rss_title = cot::$L['advboard_rss_feed'].$structure['advboard'][$c]['title'].' - '.cot::$cfg['maintitle'];
             $condition[] = array('category', $c);
         }
 
-        $advertisement = advert_model_Advert::find($condition, cot::$cfg['rss']['rss_maxitems'], 0, array(array('sort', 'desc')));
+        $advertisement = advboard_model_Advert::find($condition, cot::$cfg['rss']['rss_maxitems'], 0, array(array('sort', 'desc')));
 
         $t = new XTemplate(cot_tplfile('rss'));
 
@@ -75,7 +75,7 @@ class advert_controller_Rss
                 $text = $advert->text;
                 $textlength = intval(cot::$cfg['rss']['rss_pagemaxsymbols']);
                 if ($textlength > 0 && mb_strlen($text) > $textlength) {
-                    $text = cot_string_truncate($text, $textlength, true, false, cot::$R['advert_cuttext']);
+                    $text = cot_string_truncate($text, $textlength, true, false, cot::$R['advboard_cuttext']);
                 }
 
                 $t->assign(array(
@@ -113,7 +113,7 @@ class advert_controller_Rss
     }
 
     public function convertRelativeUrls($text) {
-        $text = preg_replace_callback('#(\s)(href|src)=("|\')?([^"\'\s>]+)(["\'\s>])#', 'advert_relative2absolute', $text);
+        $text = preg_replace_callback('#(\s)(href|src)=("|\')?([^"\'\s>]+)(["\'\s>])#', 'adv_relative2absolute', $text);
         return $text;
     }
 }

@@ -2,12 +2,12 @@
 /**
  * Ads list template for widget
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright Portal30 Studio http://portal30.ru
  */
 
-/** @var advert_model_Advert[] $advertisement */
+/** @var advboard_model_Advert[] $advertisement */
 $advertisement = $this->advertisement;
 
 // Список объявлений
@@ -17,8 +17,8 @@ if(!empty($advertisement)) {
         ?>
         <article class="list-row row">
             <div class="col-xs-12">
-                <?php if(cot_module_active('files') && cot_files_count('advert',$advRow->id,'','images') > 0) {
-                    $file = cot_files_get('advert', $advRow->id, '');
+                <?php if(cot_module_active('files') && cot_files_count('advboard',$advRow->id,'','images') > 0) {
+                    $file = cot_files_get('advboard', $advRow->id, '');
                     $thumb = cot_files_thumb($file,195,130,'crop');
                     ?>
                 <div class="pull-left marginright10 marginbottom10">
@@ -32,7 +32,7 @@ if(!empty($advertisement)) {
                     </h2>
                     <div>
                         <?php if($advRow->canEdit() && $advRow->user == cot::$usr['id']) { ?>
-                            <span class="label label-success"><?=cot::$L['advert_my_adv']?></span>
+                            <span class="label label-success"><?=cot::$L['advboard_my_adv']?></span>
                         <?php } ?>
 
                         <time datetime="<?=date('Y-m-d\TH:i:s+00:00', $advRow->begin)?>"  class="desc">
@@ -43,7 +43,7 @@ if(!empty($advertisement)) {
                             } ?>
                         </time>
                         <?php if($this->allowComments) {
-                            $cnt = cot_comments_count('advert', $advRow->id);
+                            $cnt = cot_comments_count('advboard', $advRow->id);
                             ?>
                             <span class="desc">
                                 &nbsp; | &nbsp;

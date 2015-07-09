@@ -7,18 +7,18 @@ Hooks=comments.send.new
 /**
  * Ads board module for Cotonti Siena
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright (c) 2015 Portal30 Studio http://portal30.ru
  */
 
 defined('COT_CODE') or die('Wrong URL.');
 
-require_once cot_incfile('advert', 'module');
+require_once cot_incfile('advboard', 'module');
 
 $adv_cat = '';
-if ($comarray['com_area'] == 'advert' && cot::$cfg['advert']['notifyUserNewComment'] == 1 && $comarray['com_code'] > 0){
-    $advert = advert_model_Advert::getById($comarray['com_code']);
+if ($comarray['com_area'] == 'advboard' && cot::$cfg['advboard']['notifyUserNewComment'] == 1 && $comarray['com_code'] > 0){
+    $advert = advboard_model_Advert::getById($comarray['com_code']);
     if($advert && $advert->issetEmail(true)) {
         // Очистить кеш
         // todo очистка кеша в одном файле с мультихуком
@@ -37,7 +37,7 @@ if ($comarray['com_area'] == 'advert' && cot::$cfg['advert']['notifyUserNewComme
         $advertEditUrl = $advert->getEditUrl();
         if (!cot_url_check($advertEditUrl)) $advertEditUrl = COT_ABSOLUTE_URL . $advertEditUrl;
 
-        $myAdvsUrl = cot_url('advert', 'm=user');
+        $myAdvsUrl = cot_url('advboard', 'm=user');
         if (!cot_url_check($myAdvsUrl)) $myAdvsUrl = COT_ABSOLUTE_URL . $myAdvsUrl;
 
         $tmpL = cot::$L;
@@ -53,7 +53,7 @@ if ($comarray['com_area'] == 'advert' && cot::$cfg['advert']['notifyUserNewComme
             if(cot::$cfg['defaultlang'] != $owner['user_lang']) {
                 $userLang = $owner['user_lang'];
                 include cot_langfile('main', 'core', cot::$cfg['defaultlang'], $owner['user_lang']);
-                include cot_langfile('advert', 'module', cot::$cfg['defaultlang'], $owner['user_lang']);
+                include cot_langfile('advboard', 'module', cot::$cfg['defaultlang'], $owner['user_lang']);
             }
         }
 
@@ -88,8 +88,8 @@ if ($comarray['com_area'] == 'advert' && cot::$cfg['advert']['notifyUserNewComme
         $mailView->myAdvsUrl = $myAdvsUrl;
         $mailView->advertText = $text;
 
-        $mailSubject = cot::$L['advert_new_comment'];
-        $mailBody = $mailView->render('advert.notify_comment.' . $userLang . '.' . $advert->category);
+        $mailSubject = cot::$L['advboard_new_comment'];
+        $mailBody = $mailView->render('advboard.notify_comment.' . $userLang . '.' . $advert->category);
 
         cot_mail($advert->getEmail(false, true), $mailSubject, $mailBody, '', false, null, true);
 

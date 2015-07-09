@@ -1,16 +1,16 @@
 <?php
 /**
- * Notify user: advert is expiring soon
+ * Notify user: advboard is expiring soon
  *
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright Portal30 Studio http://portal30.ru
  *
- * You can use templates: advert.notify_user_moderated.<lang>.<categoty>.php
+ * You can use templates: advboard.notify_user_moderated.<lang>.<categoty>.php
  */
 
-/** @var advert_model_Advert $advert */
+/** @var advboard_model_Advert $advert */
 $advert = $this->advert;
-$title = (!empty($advert->title)) ? $advert->title : cot::$L['advert_no_title'];
+$title = (!empty($advert->title)) ? $advert->title : cot::$L['advboard_no_title'];
 
 if($advert->owner['user_id'] == 0) {
 ?>

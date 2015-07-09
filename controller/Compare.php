@@ -6,46 +6,46 @@ defined('COT_CODE') or die('Wrong URL.');
  * Ads board module for Cotonti Siena
  *     Compare class
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright (c) Portal30 Studio http://portal30.ru
  */
-class advert_controller_Compare
+class advboard_controller_Compare
 {
     public function indexAction() {
 
-        Resources::linkFileFooter(cot::$cfg['modules_dir'].'/advert/js/advert.compare.js');
+        Resources::linkFileFooter(cot::$cfg['modules_dir'].'/advboard/js/advboard.compare.js');
 
         $sort = cot_import('s', 'G', 'ALP');       // order field name
         $way = cot_import('w', 'G', 'ALP', 4);    // order way (asc, desc)
-        //$maxrowsperpage = cot::$cfg['advert']['cat___default']['maxrowsperpage'];
+        //$maxrowsperpage = cot::$cfg['advboard']['cat___default']['maxrowsperpage'];
         $maxrowsperpage = 0;
 
         /* === Hook === */
-        foreach (cot_getextplugins('advert.compare.first') as $pl) {
+        foreach (cot_getextplugins('advboard.compare.first') as $pl) {
             include $pl;
         }
         /* ===== */
 
-        $sort = empty($sort) ? cot::$cfg['advert']['cat___default']['order'] : $sort;
-        $way = (empty($way) || !in_array($way, array('asc', 'desc'))) ? cot::$cfg['advert']['cat___default']['way'] : $way;
+        $sort = empty($sort) ? cot::$cfg['advboard']['cat___default']['order'] : $sort;
+        $way = (empty($way) || !in_array($way, array('asc', 'desc'))) ? cot::$cfg['advboard']['cat___default']['way'] : $way;
 
         $canonicalUrlParams = array('m' => 'compare');
 
         $where = array();
-        if(!empty($_SESSION['advert_compare']) && !empty($_SESSION['advert_compare'][cot::$sys['site_id']])) {
-            $where['id'] = array('id', array_keys($_SESSION['advert_compare'][cot::$sys['site_id']]));
-            $where['state'] = array('state', advert_model_Advert::PUBLISHED);
+        if(!empty($_SESSION['advboard_compare']) && !empty($_SESSION['advboard_compare'][cot::$sys['site_id']])) {
+            $where['id'] = array('id', array_keys($_SESSION['advboard_compare'][cot::$sys['site_id']]));
+            $where['state'] = array('state', advboard_model_Advert::PUBLISHED);
             $where['begin'] = array('begin', cot::$sys['now'], '<=');
             $where['expire'] = array('SQL', "expire = 0 OR expire > ".cot::$sys['now']);
         }
 
-        $template = array('advert', 'compare');
+        $template = array('advboard', 'compare');
 
-        cot::$out['subtitle'] = cot::$L['advert_compare'];
+        cot::$out['subtitle'] = cot::$L['advboard_compare'];
 
         // Building the canonical URL
-        cot::$out['canonical_uri'] = cot_url('advert', $canonicalUrlParams);
+        cot::$out['canonical_uri'] = cot_url('advboard', $canonicalUrlParams);
 
         $condition = array();
         foreach($where as $key => $val) {
@@ -55,7 +55,7 @@ class advert_controller_Compare
         $order = array(array('sticky', 'desc'), array($sort, $way));
 
         /* === Hook === */
-        foreach (cot_getextplugins('advert.compare.query') as $pl) {
+        foreach (cot_getextplugins('advboard.compare.query') as $pl) {
             include $pl;
         }
         /* ===== */
@@ -63,20 +63,20 @@ class advert_controller_Compare
         $advertisement = null;
         $totallines = 0;
         if(!empty($condition)) {
-            $totallines = advert_model_Advert::count($condition);
-            if ($totallines > 0) $advertisement = advert_model_Advert::find($condition, $maxrowsperpage, 0, $order);
+            $totallines = advboard_model_Advert::count($condition);
+            if ($totallines > 0) $advertisement = advboard_model_Advert::find($condition, $maxrowsperpage, 0, $order);
         }
 
 
         /* === Hook === */
-        foreach (cot_getextplugins('advert.compare.main') as $pl) {
+        foreach (cot_getextplugins('advboard.compare.main') as $pl) {
             include $pl;
         }
         /* ===== */
 
         $crumbs = array();
-        if (cot::$cfg['advert']['firstCrumb']) $crumbs[] = array(cot_url('advert'), cot::$L['advert_ads']);
-        $crumbs[] = array(cot_url('advert', array('m' => 'compare')), cot::$L['advert_compare']);
+        if (cot::$cfg['advboard']['firstCrumb']) $crumbs[] = array(cot_url('advboard'), cot::$L['advboard_ads']);
+        $crumbs[] = array(cot_url('advboard', array('m' => 'compare')), cot::$L['advboard_compare']);
 
         $breadcrumbs = '';
         if(!empty($crumbs)) $breadcrumbs = cot_breadcrumbs($crumbs, cot::$cfg['homebreadcrumb'], true);
@@ -86,14 +86,14 @@ class advert_controller_Compare
 
         $view = new View();
         $view->breadcrumbs = $breadcrumbs;
-        $view->page_title = htmlspecialchars(cot::$L['advert_compare']);
+        $view->page_title = htmlspecialchars(cot::$L['advboard_compare']);
         $view->advertisement = $advertisement;
         $view->totalitems = $totallines;
 //        $view->urlParams = $urlParams;
 //        $view->pageUrlParams = $pageUrlParams;
 
         /* === Hook === */
-        foreach (cot_getextplugins('advert.compare.view') as $pl) {
+        foreach (cot_getextplugins('advboard.compare.view') as $pl) {
             include $pl;
         }
         /* ===== */
@@ -113,21 +113,21 @@ class advert_controller_Compare
                 if($tmp) $ids = array($tmp);
 
             }elseif($_GET['ids'] == 'all'){
-                unset($_SESSION['advert_compare']);
+                unset($_SESSION['advboard_compare']);
             }
         }
 
         if($ids){
             foreach($ids as $id){
-                if(!empty($_SESSION['advert_compare'])){
-                    if(!empty($_SESSION['advert_compare'][cot::$sys['site_id']][$id])){
-                        unset($_SESSION['advert_compare'][cot::$sys['site_id']][$id]);
+                if(!empty($_SESSION['advboard_compare'])){
+                    if(!empty($_SESSION['advboard_compare'][cot::$sys['site_id']][$id])){
+                        unset($_SESSION['advboard_compare'][cot::$sys['site_id']][$id]);
                         $ret['removedIds'][] = $id;
                     }
-                    if(!empty($_SESSION['advert_compare'][cot::$sys['site_id']])){
-                        $ret['count'] = count($_SESSION['advert_compare'][cot::$sys['site_id']]);
+                    if(!empty($_SESSION['advboard_compare'][cot::$sys['site_id']])){
+                        $ret['count'] = count($_SESSION['advboard_compare'][cot::$sys['site_id']]);
                         if($ret['count'] == 0){
-                            unset($_SESSION['advert_compare']);
+                            unset($_SESSION['advboard_compare']);
                             break;
                         }
                     }
@@ -139,7 +139,7 @@ class advert_controller_Compare
 
         $urlParams = array('m' => 'compare');
 
-        cot_redirect(cot_url('advert', $urlParams, '', true));
+        cot_redirect(cot_url('advboard', $urlParams, '', true));
         exit();
     }
 
@@ -158,14 +158,14 @@ class advert_controller_Compare
             }
         }
         if(!$ids){
-            $ret['error'] = cot::$L['advert_not_found'];
+            $ret['error'] = cot::$L['advboard_not_found'];
             echo json_encode($ret);
             exit();
         }
 
-        $advertisement = advert_model_Advert::find(array(array('id',$ids)));
+        $advertisement = advboard_model_Advert::find(array(array('id',$ids)));
         if(!$advertisement){
-            $ret['error'] = cot::$L['advert_not_found'];
+            $ret['error'] = cot::$L['advboard_not_found'];
             echo json_encode($ret);
             exit();
         }
@@ -176,7 +176,7 @@ class advert_controller_Compare
             }
 
         }
-        $ret['count'] = count($_SESSION['advert_compare'][cot::$sys['site_id']]);
+        $ret['count'] = count($_SESSION['advboard_compare'][cot::$sys['site_id']]);
 
         echo json_encode($ret);
         exit();
@@ -197,29 +197,29 @@ class advert_controller_Compare
 
             }elseif($_POST['ids'] == 'all'){
                 $ret['count'] = 0;
-                unset($_SESSION['advert_compare']);
+                unset($_SESSION['advboard_compare']);
                 echo json_encode($ret);
                 exit();
             }
         }
 
         if(!$ids){
-            $ret['error'] = cot::$L['advert_not_found'];
+            $ret['error'] = cot::$L['advboard_not_found'];
             echo json_encode($ret);
             exit();
         }
 
         $ret['count'] = 0;
         foreach($ids as $id){
-            if(!empty($_SESSION['advert_compare'])){
-                if(!empty($_SESSION['advert_compare'][cot::$sys['site_id']][$id])){
-                    unset($_SESSION['advert_compare'][cot::$sys['site_id']][$id]);
+            if(!empty($_SESSION['advboard_compare'])){
+                if(!empty($_SESSION['advboard_compare'][cot::$sys['site_id']][$id])){
+                    unset($_SESSION['advboard_compare'][cot::$sys['site_id']][$id]);
                     $ret['removedIds'][] = $id;
                 }
-                if(!empty($_SESSION['advert_compare'][cot::$sys['site_id']])){
-                    $ret['count'] = count($_SESSION['advert_compare'][cot::$sys['site_id']]);
+                if(!empty($_SESSION['advboard_compare'][cot::$sys['site_id']])){
+                    $ret['count'] = count($_SESSION['advboard_compare'][cot::$sys['site_id']]);
                     if($ret['count'] == 0){
-                        unset($_SESSION['advert_compare']);
+                        unset($_SESSION['advboard_compare']);
                         break;
                     }
                 }
@@ -228,7 +228,7 @@ class advert_controller_Compare
             }
         }
 
-        if($ret['count'] == 0) unset($_SESSION['advert_compare']);
+        if($ret['count'] == 0) unset($_SESSION['advboard_compare']);
 
         echo json_encode($ret);
         exit();
@@ -238,7 +238,7 @@ class advert_controller_Compare
     // ==== Служебные методы ====
     /**
      * Добавить объявление к сравнению
-     * @param advert_model_Advert $advert
+     * @param advboard_model_Advert $advert
      */
     protected function addToCompare($advert){
         global $Ls;
@@ -248,11 +248,11 @@ class advert_controller_Compare
         $price = '';
         if(!empty($advert->price)) $price = $advert->price;
 
-        if(empty($_SESSION['advert_compare']) || empty($_SESSION['advert_compare'][cot::$sys['site_id']][$advert->id])){
-            //$ret['addedIds'][] = $advert->id;
+        if(empty($_SESSION['advboard_compare']) || empty($_SESSION['advboard_compare'][cot::$sys['site_id']][$advert->id])){
+            //$ret['addedIds'][] = $advboard->id;
         }
 
-        $_SESSION['advert_compare'][cot::$sys['site_id']][$advert->id] = array(
+        $_SESSION['advboard_compare'][cot::$sys['site_id']][$advert->id] = array(
             'id' => $advert->id,
             'title' => $advert->title,
             'price' => $price,
@@ -261,7 +261,7 @@ class advert_controller_Compare
             'description' => $desc
         );
 
-        return $_SESSION['advert_compare'][cot::$sys['site_id']][$advert->id];
+        return $_SESSION['advboard_compare'][cot::$sys['site_id']][$advert->id];
     }
 }
 

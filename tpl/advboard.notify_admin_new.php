@@ -1,16 +1,16 @@
 <?php
 /**
- * Notify admin: new advert - email template
+ * Notify admin: new advboard - email template
  *
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright Portal30 Studio http://portal30.ru
  *
- * You can use templates: advert.notify_admin_new_adv.<lang>.<categoty>.php
+ * You can use templates: advboard.notify_admin_new_adv.<lang>.<categoty>.php
  */
 
-/** @var advert_model_Advert $advert */
+/** @var advboard_model_Advert $advert */
 $advert = $this->advert;
-$title = (!empty($advert->title)) ? $advert->title : cot::$L['advert_no_title'];
+$title = (!empty($advert->title)) ? $advert->title : cot::$L['advboard_no_title'];
 ?>
 Добрый день!
 
@@ -21,7 +21,7 @@ $title = (!empty($advert->title)) ? $advert->title : cot::$L['advert_no_title'];
     добавил или отредактировал объявление: <a href="<?=$this->advertUrl?>"><?=htmlspecialchars($title)?></a>.
 </p>
 <p>
-    Статус объявления: <b><?=cot::$L['advert_state_'.$advert->state]?></b>
+    Статус объявления: <b><?=cot::$L['advboard_state_'.$advert->state]?></b>
 </p>
 <?php if($this->advertText != '') { ?>
     <hr />

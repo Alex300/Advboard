@@ -2,12 +2,12 @@
 /**
  * Ads list template
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright Portal30 Studio http://portal30.ru
  */
 
-/** @var advert_model_Advert[] $advertisement */
+/** @var advboard_model_Advert[] $advertisement */
 $advertisement = $this->advertisement;
 
 echo $this->breadcrumbs;
@@ -33,13 +33,13 @@ $this->displayMessages();
         if(!empty($this->addNewUrl)) { ?>
             <div class="text-right">
                 <?php if(cot::$usr['isadmin'] && $this->category['id'] > 0) { ?>
-                <a href="<?=cot_url('admin', array('m'=>'structure', 'n'=>'advert', 'id'=>$this->category['id']))?>"
+                <a href="<?=cot_url('admin', array('m'=>'structure', 'n'=>'advboard', 'id'=>$this->category['id']))?>"
                     class="btn btn-info btn-sm">
-                    <span class="glyphicon glyphicon-folder-open"></span> &nbsp;<?=cot::$L['advert_edit_category']?></a></a>
+                    <span class="glyphicon glyphicon-folder-open"></span> &nbsp;<?=cot::$L['advboard_edit_category']?></a></a>
                 <?php } ?>
 
                 <a href="<?=$this->addNewUrl?>" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span>
-                    <?=cot::$L['advert_add_new']?></a>
+                    <?=cot::$L['advboard_add_new']?></a>
             </div>
         <?php }
 
@@ -52,7 +52,7 @@ $this->displayMessages();
                             <?php if (!empty($item['icon'])) { ?>
                                 <span class="pull-left marginright10"><img src="<?= $item['icon'] ?>"/></span>
                             <?php } ?>
-                            <a href="<?= cot_url('advert', array('c' => $item['code'])) ?>"><?= $item['title'] ?> ...</a>
+                            <a href="<?= cot_url('advboard', array('c' => $item['code'])) ?>"><?= $item['title'] ?> ...</a>
                         </h3>
                     </header>
                     <?php if (!empty($item['desc'])) { ?>
@@ -71,17 +71,17 @@ $this->displayMessages();
         // Фильтры для модератора
         if($this->category['count'] > 0 && cot::$usr['isadmin']) { ?>
             <div class="well margintop20">
-                <h4 style="margin-top: 0"><?=cot::$L['advert_moderator_filters']?>:</h4>
+                <h4 style="margin-top: 0"><?=cot::$L['advboard_moderator_filters']?>:</h4>
                 <form method="get" action="<?=$this->moderatorFilters['action']?>" class="form-inline">
                     <?=$this->moderatorFilters['hidden']?>
 
                     <div class="form-group">
-                        <label><?=cot::$L['advert_state']?></label>
+                        <label><?=cot::$L['advboard_state']?></label>
                         <?=$this->moderatorFilters['state'] ?>
                     </div>
 
                     <div class="form-group">
-                        <label><?=cot::$L['advert_period']?></label>
+                        <label><?=cot::$L['advboard_period']?></label>
                         <?=$this->moderatorFilters['period'] ?>
                     </div>
 
@@ -100,8 +100,8 @@ $this->displayMessages();
                 ?>
                 <article class="list-row row">
                     <div class="col-xs-12">
-                        <?php if(cot_module_active('files') && cot_files_count('advert',$advRow->id,'','images') > 0) {
-                            $file = cot_files_get('advert', $advRow->id, '');
+                        <?php if(cot_module_active('files') && cot_files_count('advboard',$advRow->id,'','images') > 0) {
+                            $file = cot_files_get('advboard', $advRow->id, '');
                             $thumb = cot_files_thumb($file,195,130,'crop');
                             ?>
                         <div class="pull-left marginright10 marginbottom10">
@@ -115,7 +115,7 @@ $this->displayMessages();
                             </h2>
                             <div>
                                 <?php if($advRow->canEdit() && $advRow->user == cot::$usr['id']) { ?>
-                                    <span class="label label-success"><?=cot::$L['advert_my_adv']?></span>
+                                    <span class="label label-success"><?=cot::$L['advboard_my_adv']?></span>
                                 <?php } ?>
 
                                 <time datetime="<?=date('Y-m-d\TH:i:s+00:00', $advRow->begin)?>"  class="desc">
@@ -126,7 +126,7 @@ $this->displayMessages();
                                     } ?>
                                 </time>
                                 <?php if($this->allowComments) {
-                                    $cnt = cot_comments_count('advert', $advRow->id);
+                                    $cnt = cot_comments_count('advboard', $advRow->id);
                                     ?>
                                     <span class="desc">
                                         &nbsp; | &nbsp;
@@ -165,14 +165,14 @@ $this->displayMessages();
                             ?>
                             <div class="row margintop10">
                                 <div class="col-xs-12 col-md-5">
-                                    <?php if($expireStatus == advert_model_Advert::EXPIRED) { ?>
-                                        <span class="label label-warning"><?=cot::$L['advert_expire_'.$expireStatus]?></span>
+                                    <?php if($expireStatus == advboard_model_Advert::EXPIRED) { ?>
+                                        <span class="label label-warning"><?=cot::$L['advboard_expire_'.$expireStatus]?></span>
                                     <?php } elseif($expireStatus > 0) { ?>
-                                        <span class="label label-danger"><?=cot::$L['advert_expire_'.$expireStatus]?></span>
+                                        <span class="label label-danger"><?=cot::$L['advboard_expire_'.$expireStatus]?></span>
                                     <?php } ?>
 
-                                    <?php if($advRow->state > advert_model_Advert::PUBLISHED) { ?>
-                                        <span class="label label-default"><?=cot::$L['advert_state_'.$advRow->state]?></span>
+                                    <?php if($advRow->state > advboard_model_Advert::PUBLISHED) { ?>
+                                        <span class="label label-default"><?=cot::$L['advboard_state_'.$advRow->state]?></span>
                                     <?php } ?>
 
                                     <span class="italic desc">(<?=cot::$L['Hits']?>:&nbsp;<?=$advRow->views?>)</span>
@@ -185,14 +185,14 @@ $this->displayMessages();
 
                                         <?php if(cot::$usr['isadmin']) { ?>
                                             <a href="<?=$advRow->validateUrl?>" class="btn btn-xs btn-default confirmLink">
-                                                <?php if($advRow->state == advert_model_Advert::AWAITING_MODERATION)  {?>
+                                                <?php if($advRow->state == advboard_model_Advert::AWAITING_MODERATION)  {?>
                                                     <span class="glyphicon glyphicon-check"></span> <?=cot::$L['Validate']?>
                                                 <?php } else { ?>
                                                     <span class="glyphicon glyphicon-time"></span> <?=cot::$L['Putinvalidationqueue']?>
                                                 <?php } ?></a>
 
                                             <a href="<?=$advRow->cloneUrl?>" class="btn btn-xs btn-default">
-                                                <span class="glyphicon glyphicon glyphicon-duplicate"></span> <?=cot::$L['advert_clone']?></a>
+                                                <span class="glyphicon glyphicon glyphicon-duplicate"></span> <?=cot::$L['advboard_clone']?></a>
                                         <?php } ?>
 
                                         <a href="<?=$advRow->getDeleteUrl($this->pageUrlParams)?>" class="btn btn-xs btn-danger confirmLink">
@@ -203,7 +203,7 @@ $this->displayMessages();
                         <?php } ?>
 
                         <?php if($this->category['config']['compareOn']) {
-                            echo advert_compare_checkbox($advRow);
+                            echo adv_compare_checkbox($advRow);
                         } ?>
 
                     </div>
@@ -221,7 +221,7 @@ $this->displayMessages();
 
     <aside class="col-xs-12 col-sm-4">
         <?php if($this->category['config']['compareOn']) {
-            echo advert_controller_Widget::compare();
+            echo advboard_controller_Widget::compare();
         } ?>
     </aside>
 </div>

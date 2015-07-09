@@ -7,14 +7,14 @@ Hooks=module
 /**
  * Ads board module for Cotonti Siena
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright Portal30 Studio http://portal30.ru
  */
 defined('COT_CODE') or die('Wrong URL.');
 
 // Environment setup
-$env['location'] = 'advert';
+$env['location'] = 'advboard';
 
 // Self requirements (if needed)
 require_once cot_incfile($env['ext'], 'module');

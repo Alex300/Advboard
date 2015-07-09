@@ -3,19 +3,19 @@ defined('COT_CODE') or die('Wrong URL.');
 
 if(cot_plugin_active('comments') && !function_exists('cot_comments_remove')) require_once cot_incfile('comments', 'plug');
 
-if(empty($GLOBALS['db_advert'])) {
-    cot::$db->registerTable('advert');
-    cot_extrafields_register_table('advert');
+if(empty($GLOBALS['db_advboard'])) {
+    cot::$db->registerTable('advboard');
+    cot_extrafields_register_table('advboard');
 }
 
 /**
- * Модель advert_model_Advert
+ * Модель advboard_model_Advert
  *
  * Модель объявления
  *
- * @method static advert_model_Advert getById($pk);
- * @method static advert_model_Advert fetchOne($conditions = array(), $order = '')
- * @method static advert_model_Advert[] find($conditions = array(), $limit = 0, $offset = 0, $order = '');
+ * @method static advboard_model_Advert getById($pk);
+ * @method static advboard_model_Advert fetchOne($conditions = array(), $order = '')
+ * @method static advboard_model_Advert[] find($conditions = array(), $limit = 0, $offset = 0, $order = '');
  *
  * @property int    $id             id
  * @property string $alias          Алияс
@@ -55,7 +55,7 @@ if(empty($GLOBALS['db_advert'])) {
  *
  * @property int $expireStatus
  */
-class advert_model_Advert extends Som_Model_Abstract
+class advboard_model_Advert extends Som_Model_Abstract
 {
     /**
      * @var Som_Model_Mapper_Abstract
@@ -87,7 +87,7 @@ class advert_model_Advert extends Som_Model_Abstract
      * Static constructor
      */
     public static function __init($db = 'db'){
-        static::$_tbname = cot::$db->advert;
+        static::$_tbname = cot::$db->advboard;
         parent::__init($db);
     }
 
@@ -254,7 +254,7 @@ class advert_model_Advert extends Som_Model_Abstract
             $urlParams['id'] = $this->_data['id'];
         }
 
-        return cot_url('advert', $urlParams, '', $htmlspecialchars_bypass);
+        return cot_url('advboard', $urlParams, '', $htmlspecialchars_bypass);
     }
 
     /**
@@ -268,7 +268,7 @@ class advert_model_Advert extends Som_Model_Abstract
             'a' => 'edit',
             'id'=> $this->_data['id']
         );
-        return cot_url('advert', $urlParams, '', $htmlspecialchars_bypass);
+        return cot_url('advboard', $urlParams, '', $htmlspecialchars_bypass);
     }
 
     /**
@@ -283,7 +283,7 @@ class advert_model_Advert extends Som_Model_Abstract
             'act' => 'clone',
             'id'=> $this->_data['id']
         );
-        return cot_url('advert', $urlParams, '', $htmlspecialchars_bypass);
+        return cot_url('advboard', $urlParams, '', $htmlspecialchars_bypass);
     }
 
     /**
@@ -307,7 +307,7 @@ class advert_model_Advert extends Som_Model_Abstract
             $delUrlParams['b'] = $b;
         }
 
-        return cot_confirm_url(cot_url('advert', $delUrlParams), 'advert', $msg_key);
+        return cot_confirm_url(cot_url('advboard', $delUrlParams), 'advboard', $msg_key);
     }
 
     /**
@@ -321,7 +321,7 @@ class advert_model_Advert extends Som_Model_Abstract
             'a' => 'validate',
             'id'=> $this->_data['id']
         );
-        return cot_confirm_url(cot_url('advert', $urlParams), 'advert', $msg_key);
+        return cot_confirm_url(cot_url('advboard', $urlParams), 'advboard', $msg_key);
     }
 
     public function getTextCut(){
@@ -330,10 +330,10 @@ class advert_model_Advert extends Som_Model_Abstract
         // Текст берется через геттер т.к. должет отработать cot_parse
         $textCut = cot_cut_more($this->text);
         $textlength = 0;
-        if($this->_data['category'] != '' && isset(cot::$cfg['advert']['cat_' . $this->_data['category']])) {
-            $textlength = cot::$cfg['advert']['cat_' . $this->_data['category']]['truncatetext'];
+        if($this->_data['category'] != '' && isset(cot::$cfg['advboard']['cat_' . $this->_data['category']])) {
+            $textlength = cot::$cfg['advboard']['cat_' . $this->_data['category']]['truncatetext'];
             if ($textlength > 0 && mb_strlen($textCut) > $textlength) {
-                $textCut = cot_string_truncate($textCut, $textlength, true, false, cot::$R['advert_cuttext']);
+                $textCut = cot_string_truncate($textCut, $textlength, true, false, cot::$R['advboard_cuttext']);
             }
         }
         return $textCut;
@@ -343,18 +343,18 @@ class advert_model_Advert extends Som_Model_Abstract
         if ($this->_data['expire'] > 0) {
             $diff = $this->_data['expire'] - cot::$sys['now'];
 
-                if (cot::$cfg['advert']['expNotifyPeriod'] > 0){
+                if (cot::$cfg['advboard']['expNotifyPeriod'] > 0){
 
-                    if ($diff < (86400 * cot::$cfg['advert']['expNotifyPeriod']) && $diff > 0){
-                        return advert_model_Advert::EXPIRING;
+                    if ($diff < (86400 * cot::$cfg['advboard']['expNotifyPeriod']) && $diff > 0){
+                        return advboard_model_Advert::EXPIRING;
 
                     } elseif ($diff <= 0) {
-                        return advert_model_Advert::EXPIRED;
+                        return advboard_model_Advert::EXPIRED;
                     }
                 }
 
         }
-        return advert_model_Advert::PUBLISHED;
+        return advboard_model_Advert::PUBLISHED;
     }
 
     /**
@@ -362,19 +362,19 @@ class advert_model_Advert extends Som_Model_Abstract
      */
     public function canEdit() {
         // Права на любую категорию доски объявлений
-        list($authRead, $authWrite, $isAdmin) = cot_auth('advert', 'any');
+        list($authRead, $authWrite, $isAdmin) = cot_auth('advboard', 'any');
         if(!$authRead || !$authWrite) return false;
 
         if(cot::$usr['id'] > 0 && cot::$usr['id'] == $this->_data['user']) return true;
 
-        list($authRead, $authWrite, $isAdmin) = cot_auth('advert', $this->_data['category']);
+        list($authRead, $authWrite, $isAdmin) = cot_auth('advboard', $this->_data['category']);
         if($isAdmin) return true;
 
         if(!$authRead || !$authWrite) return false;
 
         // Незареги могут править объявы те которые добавили сами
         if (cot::$usr['id'] == 0){
-            if (!empty($_SESSION['advert']) && in_array($this->_data['id'], $_SESSION['advert'])){
+            if (!empty($_SESSION['advboard']) && in_array($this->_data['id'], $_SESSION['advboard'])){
                 return true;
             }
         }
@@ -383,7 +383,7 @@ class advert_model_Advert extends Som_Model_Abstract
     }
 
     protected function afterInsert() {
-        if($this->_data['id'] > 0 && cot_module_active('files')) cot_files_linkFiles('advert', $this->_data['id']);
+        if($this->_data['id'] > 0 && cot_module_active('files')) cot_files_linkFiles('advboard', $this->_data['id']);
 
         return parent::afterInsert();
     }
@@ -396,8 +396,8 @@ class advert_model_Advert extends Som_Model_Abstract
     }
 
     protected function afterUpdate() {
-        if($this->_oldData['state'] == advert_model_Advert::AWAITING_MODERATION &&
-            $this->_data['state'] == advert_model_Advert::PUBLISHED) {
+        if($this->_oldData['state'] == advboard_model_Advert::AWAITING_MODERATION &&
+            $this->_data['state'] == advboard_model_Advert::PUBLISHED) {
             // Уведомление пользователю о том, что его объявление прошло модерацию
             $this->notifyUserModerated();
         }
@@ -435,14 +435,14 @@ class advert_model_Advert extends Som_Model_Abstract
             // Эти слова зарезервированы
             if(in_array($title, array('all', 'unvalidated', 'saved_drafts'))) $cnt = 1;
             // Алияс не может совпадать с кодом категории
-            if(isset($structure['advert'][$title])) $cnt = 1;
+            if(isset($structure['advboard'][$title])) $cnt = 1;
 
             if($cnt == 0) {
                 $cond = array(
                     array('alias', $title),
                     array('id', $this->_data['id'], '!=')
                 );
-                $cnt = advert_model_Advert::count($cond);
+                $cnt = advboard_model_Advert::count($cond);
             }
             if($cnt > 0) $title = $this->_data['id'].'-'.$title;
 
@@ -453,21 +453,21 @@ class advert_model_Advert extends Som_Model_Abstract
 
         // Для незарега запомним id страницы для чтого, чтобы он мог ее отредактировать в пределах сесии
         if(cot::$usr['id'] == 0){
-            if(empty($_SESSION['advert']) || !in_array($this->_data['id'], $_SESSION['advert'])) {
-                $_SESSION['advert'][] = $this->_data['id'];
+            if(empty($_SESSION['advboard']) || !in_array($this->_data['id'], $_SESSION['advboard'])) {
+                $_SESSION['advboard'][] = $this->_data['id'];
             }
         }
 
         // Обновить структуру
         // Наверное не учитываем состояние объявления, а считаем все.
-        $count = advert_model_Advert::count(array(array('category', $this->_data['category'])));
+        $count = advboard_model_Advert::count(array(array('category', $this->_data['category'])));
         static::$_db->update(cot::$db->structure, array('structure_count' => $count),
-            "structure_area='advert' AND structure_code=?", $this->_data['category']);
+            "structure_area='advboard' AND structure_code=?", $this->_data['category']);
 
         if(!empty($this->_oldData['category'])) {
-            $count = advert_model_Advert::count(array(array('category', $this->_oldData['category'])));
+            $count = advboard_model_Advert::count(array(array('category', $this->_oldData['category'])));
             static::$_db->update(cot::$db->structure, array('structure_count' => $count),
-                "structure_area='advert' AND structure_code = ?", $this->_oldData['category']);
+                "structure_area='advboard' AND structure_code = ?", $this->_oldData['category']);
         }
         cot::$cache && cot::$cache->db->remove('structure', 'system');
 
@@ -482,7 +482,7 @@ class advert_model_Advert extends Som_Model_Abstract
                 $lastNotify = '1970-01-01';
             }
             $now = date('Y-m-d', cot::$sys['now']);
-            if ($lastNotify != $now && (cot::$cfg['advert']['notifyAdminNewAdv']) || $this->_data['state'] == static::AWAITING_MODERATION) {
+            if ($lastNotify != $now && (cot::$cfg['advboard']['notifyAdminNewAdv']) || $this->_data['state'] == static::AWAITING_MODERATION) {
                 $this->notifyAdmin();
             }
         }
@@ -520,7 +520,7 @@ class advert_model_Advert extends Som_Model_Abstract
         // Удалить все файлы и изображения
         if(cot_module_active('files')){
             $files = files_model_File::find(array(
-                array('file_source', 'advert'),
+                array('file_source', 'advboard'),
                 array('file_item', $this->_data['id'])
             ));
             if(!empty($files)){
@@ -531,7 +531,7 @@ class advert_model_Advert extends Som_Model_Abstract
         }
 
         // Удалить все комментарии к этому отзыву
-        if(cot_plugin_active('comments')) cot_comments_remove('advert', $this->_data['id']);
+        if(cot_plugin_active('comments')) cot_comments_remove('advboard', $this->_data['id']);
 
         return parent::beforeDelete();
     }
@@ -539,9 +539,9 @@ class advert_model_Advert extends Som_Model_Abstract
     protected function afterDelete() {
         // Обновить структуру
         // Наверное не учитываем состояние объявления, а считаем все.
-        $count = advert_model_Advert::count(array(array('category', $this->_data['category'])));
+        $count = advboard_model_Advert::count(array(array('category', $this->_data['category'])));
         static::$_db->update(cot::$db->structure, array('structure_count' => $count),
-            "structure_area='advert' AND structure_code = ?", $this->_data['category']);
+            "structure_area='advboard' AND structure_code = ?", $this->_data['category']);
 
 
         // Сбросим кеш главной страницы
@@ -583,17 +583,17 @@ class advert_model_Advert extends Som_Model_Abstract
             $admEmails[$tmp] = cot::$cfg['defaultlang'];
         }
 
-        //$email_subject = $L['advert_created2'].' - '.cot::$cfg['maintitle'];  - это в админке в настройках заголовков и метатегов
-        $mailSubject = $L['advert_created2'];
+        //$email_subject = $L['advboard_created2'].' - '.cot::$cfg['maintitle'];  - это в админке в настройках заголовков и метатегов
+        $mailSubject = $L['advboard_created2'];
 
         $sended = array();
         foreach ($admEmails as $email => $userLang) {
             if (!in_array($email, $sended)) {
                 if (empty($userLang)) $userLang = cot::$cfg['defaultlang'];
                 include cot_langfile('main', 'core', cot::$cfg['defaultlang'], $userLang);
-                include cot_langfile('advert', 'module', cot::$cfg['defaultlang'], $userLang);
+                include cot_langfile('advboard', 'module', cot::$cfg['defaultlang'], $userLang);
 
-                $mailBody = $mailView->render('advert.notify_admin_new.' . $userLang . '.' . $this->_data['category']);
+                $mailBody = $mailView->render('advboard.notify_admin_new.' . $userLang . '.' . $this->_data['category']);
                 cot_mail($email, $mailSubject, $mailBody, '', false, null, true);
                 $sended[] = $email;
             }
@@ -629,7 +629,7 @@ class advert_model_Advert extends Som_Model_Abstract
             if(cot::$cfg['defaultlang'] != $this->_owner['user_lang']) {
                 $userLang = $this->_owner['user_lang'];
                 include cot_langfile('main', 'core', cot::$cfg['defaultlang'], $this->_owner['user_lang']);
-                include cot_langfile('advert', 'module', cot::$cfg['defaultlang'], $this->_owner['user_lang']);
+                include cot_langfile('advboard', 'module', cot::$cfg['defaultlang'], $this->_owner['user_lang']);
             }
         }
 
@@ -639,8 +639,8 @@ class advert_model_Advert extends Som_Model_Abstract
         $mailView->advertUrl = $advertUrl;
         $mailView->advertText = $text;
 
-        $mailSubject = $L['advert_moderated'];
-        $mailBody = $mailView->render('advert.notify_user_moderated.' . $userLang . '.' . $this->_data['category']);
+        $mailSubject = $L['advboard_moderated'];
+        $mailBody = $mailView->render('advboard.notify_user_moderated.' . $userLang . '.' . $this->_data['category']);
         cot_mail($this->getEmail(false, true), $mailSubject, $mailBody, '', false, null, true);
 
         // Вернем язык на место
@@ -692,14 +692,14 @@ class advert_model_Advert extends Som_Model_Abstract
                 array (
                     'type' => 'decimal(15,2)',
                     'default' => 0,
-                    'description' => cot::$L['advert_price'],
+                    'description' => cot::$L['advboard_price'],
                 ),
             'description' =>
                 array (
                     'type' => 'varchar',
                     'length' => '255',
                     'default' => '',
-                    'description' => cot::$L['advert_desc'],
+                    'description' => cot::$L['advboard_desc'],
                 ),
             'text' =>
                 array (
@@ -712,7 +712,7 @@ class advert_model_Advert extends Som_Model_Abstract
                     'type' => 'varchar',
                     'length' => '255',
                     'default' => '',
-                    'description' => cot::$L['advert_person'],
+                    'description' => cot::$L['advboard_person'],
                 ),
             // Email для связи, если разместил объявление гость
             'email' =>
@@ -726,7 +726,7 @@ class advert_model_Advert extends Som_Model_Abstract
                 array (
                     'type' => 'int',
                     'default' => 0,
-                    'description' => cot::$L['advert_city'],    // id города
+                    'description' => cot::$L['advboard_city'],    // id города
                 ),
             'city_name' =>
                 array(
@@ -734,21 +734,21 @@ class advert_model_Advert extends Som_Model_Abstract
                     'type' => 'varchar',
                     'length' => '255',
                     'default' => '',
-                    'description' => cot::$L['advert_city'],
+                    'description' => cot::$L['advboard_city'],
                 ),
             'phone' =>
                 array (
                     'type' => 'varchar',
                     'length' => '255',
                     'default' => '',
-                    'description' => cot::$L['advert_phone'],
+                    'description' => cot::$L['advboard_phone'],
                 ),
             'sticky' =>
                 array (
                     'type' => 'tinyint',
                     'length' => 1,
                     'default' => 0,
-                    'description' => cot::$L['advert_sticky'],
+                    'description' => cot::$L['advboard_sticky'],
                 ),
             'begin' =>
                 array (
@@ -766,7 +766,7 @@ class advert_model_Advert extends Som_Model_Abstract
                 array (
                     'type' => 'int',
                     'default' => 0,
-                    'description' => cot::$L['advert_sort_date'],
+                    'description' => cot::$L['advboard_sort_date'],
                 ),
             'user' =>
                 array (
@@ -819,7 +819,7 @@ class advert_model_Advert extends Som_Model_Abstract
                 'name' => 'city',
                 'type' => 'link',
                 'default' => 0,
-                'description' => cot::$L['advert_city'],
+                'description' => cot::$L['advboard_city'],
                 'link' =>
                     array(
                         'model' => 'regioncity_model_City',
@@ -833,4 +833,4 @@ class advert_model_Advert extends Som_Model_Abstract
     }
 }
 
-advert_model_Advert::__init();
+advboard_model_Advert::__init();

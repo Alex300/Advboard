@@ -1,7 +1,7 @@
 --
--- Структура таблицы `cot_auto`
+-- Структура таблицы `cot_advboard`
 --
-CREATE TABLE IF NOT EXISTS `cot_advert` (
+CREATE TABLE IF NOT EXISTS `cot_advboard` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(255) NOT NULL default '',
   `state` tinyint(1) unsigned NOT NULL default '0',

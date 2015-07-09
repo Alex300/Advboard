@@ -2,34 +2,34 @@
 /**
  * Ads board module for Cotonti Siena
  *
- * @package Advert
+ * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
  * @copyright (c) Portal30 Studio http://portal30.ru
  */
 defined('COT_CODE') or die('Wrong URL.');
 
-cot::$db->registerTable('advert');
-cot_extrafields_register_table('advert');
+cot::$db->registerTable('advboard');
+cot_extrafields_register_table('advboard');
 
 // Requirements
-require_once cot_langfile('advert', 'module');
-require_once  cot_incfile('advert', 'module', 'resources');
+require_once cot_langfile('advboard', 'module');
+require_once  cot_incfile('advboard', 'module', 'resources');
 
 if(cot_module_active('pm')) require_once  cot_incfile('pm', 'module');
 
 /**
  * Returns possible values for category sorting order
  */
-function cot_advert_config_order() {
-    global $cot_extrafields, $L, $db_advert;
+function cot_advboard_config_order() {
+    global $cot_extrafields, $L, $db_advboard;
 
     $options_sort = array(
-        'sort' => cot::$L['advert_by_sort_field'],
+        'sort' => cot::$L['advboard_by_sort_field'],
         'id' => cot::$L['Id'],
         'title' => cot::$L['Title'],
         'desc' => cot::$L['Description'],
         'text' => cot::$L['Body'],
-        'price' => cot::$L['advert_price'],
+        'price' => cot::$L['advboard_price'],
         'user' => cot::$L['Owner'],
         'begin' => cot::$L['Begin'],
         'expire' => cot::$L['Expire'],
@@ -38,10 +38,10 @@ function cot_advert_config_order() {
         'updated' => cot::$L['Updated'],
     );
 
-    if(!empty($cot_extrafields[$db_advert])) {
-        foreach ($cot_extrafields[$db_advert] as $exfld) {
-            $options_sort[$exfld['field_name']] = isset(cot::$L['advert_' . $exfld['field_name'] . '_title']) ?
-                cot::$L['advert_' . $exfld['field_name'] . '_title'] : $exfld['field_description'];
+    if(!empty($cot_extrafields[$db_advboard])) {
+        foreach ($cot_extrafields[$db_advboard] as $exfld) {
+            $options_sort[$exfld['field_name']] = isset(cot::$L['advboard_' . $exfld['field_name'] . '_title']) ?
+                cot::$L['advboard_' . $exfld['field_name'] . '_title'] : $exfld['field_description'];
         }
     }
 
@@ -56,17 +56,17 @@ function cot_advert_config_order() {
  * @param string $cat Cat code
  * @return int
  */
-function cot_advert_sync($cat) {
-//    $sql = cot::$db->query("SELECT COUNT(*) FROM cot::$db->advert
+function cot_advboard_sync($cat) {
+//    $sql = cot::$db->query("SELECT COUNT(*) FROM cot::$db->advboard
 //		WHERE category=".cot::$db->quote($cat)." AND (state = 0 OR page_state=2)");
 
-//    $sql = cot::$db->query("SELECT COUNT(*) FROM ".cot::$db->advert."
+//    $sql = cot::$db->query("SELECT COUNT(*) FROM ".cot::$db->advboard."
 //            WHERE category=".cot::$db->quote($cat)." AND (state = 0)");
 //
 //    return (int) $sql->fetchColumn();
 
     // Наверное не учитываем состояние объявления, а считаем все.
-    return advert_model_Advert::count(array(array('category', $cat)));
+    return advboard_model_Advert::count(array(array('category', $cat)));
 }
 
 /**
@@ -76,8 +76,8 @@ function cot_advert_sync($cat) {
  * @param string $newcat New Cat code
  * @return bool
  */
-function cot_advert_updatecat($oldcat, $newcat) {
-    return (bool) cot::$db->update(cot::$db->advert, array("category" => $newcat), "category=?", $oldcat);
+function cot_advboard_updatecat($oldcat, $newcat) {
+    return (bool) cot::$db->update(cot::$db->advboard, array("category" => $newcat), "category=?", $oldcat);
 }
 
 /**
@@ -86,10 +86,10 @@ function cot_advert_updatecat($oldcat, $newcat) {
  * @return array       Permissions array with keys: 'auth_read', 'auth_write', 'isadmin', 'auth_download'
  * @todo Реализуй меня
  */
-function cot_advert_auth($cat = null) {
+function cot_advboard_auth($cat = null) {
     if (empty($cat)) $cat = 'any';
     $auth = array();
-    list($auth['auth_read'], $auth['auth_write'], $auth['isadmin'], $auth['auth_download']) = cot_auth('advert', $cat, 'RWA1');
+    list($auth['auth_read'], $auth['auth_write'], $auth['isadmin'], $auth['auth_download']) = cot_auth('advboard', $cat, 'RWA1');
     return $auth;
 }
 
@@ -149,7 +149,7 @@ function cot_user_ads_count($uid = 0, $cache = true) {
     if($cache && isset($stCache[$uid])) return $stCache[$uid];
 
     $cond = array(array('user', $uid));
-    $stCache[$uid] = advert_model_Advert::count($cond);
+    $stCache[$uid] = advboard_model_Advert::count($cond);
 
     return $stCache[$uid];
 }
@@ -160,7 +160,7 @@ function cot_user_ads_count($uid = 0, $cache = true) {
  *
  * @return bool|string TRUE or Error message
  */
-function advert_checkEmail($mail = ''){
+function adv_checkEmail($mail = ''){
     global $db_banlist, $db, $L;
 
     // Проверяем бан-лист
@@ -175,7 +175,7 @@ function advert_checkEmail($mail = ''){
     }
 
     if(!cot_check_email($mail)){
-        $ret = cot::$L['advert_err_wrongmail'];
+        $ret = cot::$L['advboard_err_wrongmail'];
         return $ret;
     }
 
@@ -185,17 +185,17 @@ function advert_checkEmail($mail = ''){
 /**
  * Чекбокс "Добавить к сравнению
  *
- * @param advert_model_Advert $item
+ * @param advboard_model_Advert $item
  * @param string $title
  * @return string
  */
-function advert_compare_checkbox($item, $title = null) {
+function adv_compare_checkbox($item, $title = null) {
 
     static $loaded = false;
 
     $choosen = false;
 
-    if($item instanceof advert_model_Advert) {
+    if($item instanceof advboard_model_Advert) {
         $id = $item->id;
     } else {
         $id = $item;
@@ -203,20 +203,20 @@ function advert_compare_checkbox($item, $title = null) {
 
     if($id == 0) return '';
 
-    if(!empty($_SESSION['advert_compare']) && !empty($_SESSION['advert_compare'][cot::$sys['site_id']])) {
-        if(isset($_SESSION['advert_compare'][cot::$sys['site_id']][$id])
-            && !empty($_SESSION['advert_compare'][cot::$sys['site_id']][$id])) {
+    if(!empty($_SESSION['advboard_compare']) && !empty($_SESSION['advboard_compare'][cot::$sys['site_id']])) {
+        if(isset($_SESSION['advboard_compare'][cot::$sys['site_id']][$id])
+            && !empty($_SESSION['advboard_compare'][cot::$sys['site_id']][$id])) {
 
             $choosen = true;
         }
     }
 
-    if(is_null($title)) $title = cot::$L['advert_compare_add'];
+    if(is_null($title)) $title = cot::$L['advboard_compare_add'];
 
-    $ret = cot_checkbox($choosen, 'advert_comp[]', $title, array('class' => 'advert_compare'), $id, 'input_check');
+    $ret = cot_checkbox($choosen, 'advboard_comp[]', $title, array('class' => 'advboard_compare'), $id, 'input_check');
 
     if(!$loaded) {
-        Resources::linkFileFooter(cot::$cfg['modules_dir'].'/advert/js/advert.compare.form.js');
+        Resources::linkFileFooter(cot::$cfg["modules_dir"].'/advboard/js/advboard.compare.form.js');
         $loaded = true;
         $ret .= cot_xp();
     }
@@ -230,7 +230,7 @@ function advert_compare_checkbox($item, $title = null) {
  * Используется в шаблоне страницы сравнения
  * В Вашем шаблоне, возможно нужно будет использовать свою функцию
  *
- * @param advert_model_Advert[] $compare
+ * @param advboard_model_Advert[] $compare
  * @param $field
  * @param string|array $params - Название или Массив параметров поля:
  *                                              'title'   => название поля
@@ -238,14 +238,14 @@ function advert_compare_checkbox($item, $title = null) {
  *                                              'postfix' => постфикс
  * @return string
  */
-function advert_compare_renderRow($compare, $field, $params = array()){
+function adv_compare_renderRow($compare, $field, $params = array()){
 
     $predifined = array();
 
     static $modelFields = false;
     static $counter = 0;
 
-    if(empty($modelFields)) $modelFields = advert_model_Advert::fields();
+    if(empty($modelFields)) $modelFields = advboard_model_Advert::fields();
 
 //    if(empty($modelFields[$field]) && !in_array($field, $predifined)) return '';
 
@@ -265,7 +265,7 @@ function advert_compare_renderRow($compare, $field, $params = array()){
             switch($modelFields[$field]['type']){
                 case 'tinyint':
                 case 'bool':
-                    $val = advert_YesNo(intval($val));
+                    $val = adv_YesNo(intval($val));
                     break;
 
                 case 'int':
@@ -313,10 +313,10 @@ function advert_compare_renderRow($compare, $field, $params = array()){
 /**
  * Элементы списка для выбора периода размещения объявления
  */
-function advert_periodItems($c = ''){
+function adv_periodItems($c = ''){
 
-    $maxPeriod = cot::$cfg['advert']['cat___default']['maxPeriod'];
-    if(!empty($c) && isset(cot::$cfg['advert']['cat_' . $c])) $maxPeriod = cot::$cfg['advert']['cat_' . $c]['maxPeriod'];
+    $maxPeriod = cot::$cfg['advboard']['cat___default']['maxPeriod'];
+    if(!empty($c) && isset(cot::$cfg['advboard']['cat_' . $c])) $maxPeriod = cot::$cfg['advboard']['cat_' . $c]['maxPeriod'];
 
     $period = array();
     $tmp = 0;
@@ -332,12 +332,12 @@ function advert_periodItems($c = ''){
 
     if ($tmp < $maxPeriod) $period[] = $maxPeriod;
 
-    if (cot::$cfg['advert']['periodOrder'] == 'desc') rsort($period);
+    if (cot::$cfg['advboard']['periodOrder'] == 'desc') rsort($period);
 
     return $period;
 }
 
-function advert_relative2absolute($matches) {
+function adv_relative2absolute($matches) {
     global $sys;
     $res = $matches[1].$matches[2].'='.$matches[3];
     if (preg_match('#^(http|https|ftp)://#', $matches[4])) {
@@ -356,8 +356,8 @@ function advert_relative2absolute($matches) {
     return $res;
 }
 
-function advert_YesNo($cond){
-    if($cond) return '<span class="text-success glyphicon glyphicon-ok"></span>';
+function adv_YesNo($cond){
+    if($cond) return cot::$R['advboard_yes'];
 
-    return '<span class="glyphicon glyphicon-minus"></span>';
+    return cot::$R['advboard_no'];
 }
