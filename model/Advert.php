@@ -385,6 +385,14 @@ class advboard_model_Advert extends Som_Model_Abstract
     protected function afterInsert() {
         if($this->_data['id'] > 0 && cot_module_active('files')) cot_files_linkFiles('advboard', $this->_data['id']);
 
+        // Обновить структуру
+        // Наверное не учитываем состояние объявления, а считаем все.
+        $count = advboard_model_Advert::count(array(array('category', $this->_data['category'])));
+        static::$_db->update(cot::$db->structure, array('structure_count' => $count),
+            "structure_area='advboard' AND structure_code=?", $this->_data['category']);
+
+        cot::$cache && cot::$cache->db->remove('structure', 'system');
+
         return parent::afterInsert();
     }
 
@@ -396,10 +404,26 @@ class advboard_model_Advert extends Som_Model_Abstract
     }
 
     protected function afterUpdate() {
+        global $structure;
+
         if($this->_oldData['state'] == advboard_model_Advert::AWAITING_MODERATION &&
             $this->_data['state'] == advboard_model_Advert::PUBLISHED) {
             // Уведомление пользователю о том, что его объявление прошло модерацию
             $this->notifyUserModerated();
+        }
+
+        // Обновить структуру, если она изменлась
+        if(!empty($this->_oldData['category'])) {
+            $count = advboard_model_Advert::count(array(array('category', $this->_data['category'])));
+            static::$_db->update(cot::$db->structure, array('structure_count' => $count),
+                "structure_area='advboard' AND structure_code=?", $this->_data['category']);
+
+            if (!empty($structure['advboard'][$this->_oldData['category']])) {
+                $count = advboard_model_Advert::count(array(array('category', $this->_oldData['category'])));
+                static::$_db->update(cot::$db->structure, array('structure_count' => $count),
+                    "structure_area='advboard' AND structure_code = ?", $this->_oldData['category']);
+            }
+            cot::$cache && cot::$cache->db->remove('structure', 'system');
         }
 
         return parent::afterUpdate();
@@ -457,20 +481,6 @@ class advboard_model_Advert extends Som_Model_Abstract
                 $_SESSION['advboard'][] = $this->_data['id'];
             }
         }
-
-        // Обновить структуру
-        // Наверное не учитываем состояние объявления, а считаем все.
-        $count = advboard_model_Advert::count(array(array('category', $this->_data['category'])));
-        static::$_db->update(cot::$db->structure, array('structure_count' => $count),
-            "structure_area='advboard' AND structure_code=?", $this->_data['category']);
-
-        if(!empty($this->_oldData['category']) && !empty($structure['advboard'][$this->_oldData['category']])) {
-            $count = advboard_model_Advert::count(array(array('category', $this->_oldData['category'])));
-            static::$_db->update(cot::$db->structure, array('structure_count' => $count),
-                "structure_area='advboard' AND structure_code = ?", $this->_oldData['category']);
-        }
-        cot::$cache && cot::$cache->db->remove('structure', 'system');
-
 
         // Уведомление администратору
         if(cot::$env['location'] != 'administration') {
