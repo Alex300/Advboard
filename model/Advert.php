@@ -464,7 +464,7 @@ class advboard_model_Advert extends Som_Model_Abstract
         static::$_db->update(cot::$db->structure, array('structure_count' => $count),
             "structure_area='advboard' AND structure_code=?", $this->_data['category']);
 
-        if(!empty($this->_oldData['category'])) {
+        if(!empty($this->_oldData['category']) && !empty($structure['advboard'][$this->_oldData['category']])) {
             $count = advboard_model_Advert::count(array(array('category', $this->_oldData['category'])));
             static::$_db->update(cot::$db->structure, array('structure_count' => $count),
                 "structure_area='advboard' AND structure_code = ?", $this->_oldData['category']);
@@ -543,9 +543,11 @@ class advboard_model_Advert extends Som_Model_Abstract
         static::$_db->update(cot::$db->structure, array('structure_count' => $count),
             "structure_area='advboard' AND structure_code = ?", $this->_data['category']);
 
-
-        // Сбросим кеш главной страницы
-        if(!empty(cot::$cache) && cot::$cfg['cache_index']) cot::$cache->page->clear('index');
+        // Сбросим кеш структуры и главной страницы
+        if(!empty(cot::$cache)) {
+            cot::$cache->db->remove('structure', 'system');
+            if(cot::$cfg['cache_index']) cot::$cache->page->clear('index');
+        }
 
         return parent::afterDelete();
     }
