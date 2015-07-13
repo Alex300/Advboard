@@ -20,9 +20,9 @@ var new_sticky_relocate = function () {
     $(window).unbind('scroll', new_sticky_relocate);
 
     if ((window_top + offset) > div_top) {
-        $('#compare-header2').addClass('stick').css({display: 'block'}).width(div_width);
+        compareHeader.addClass('stick').css({display: 'block'}).width(div_width);
     } else {
-        $('#compare-header2').removeClass('stick').css({display:'none'});
+        compareHeader.removeClass('stick').css({display:'none'});
     }
 
     $(window).bind('scroll', new_sticky_relocate);
