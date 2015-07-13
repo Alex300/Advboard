@@ -58,11 +58,11 @@ if ($this->totalitems == 0) { ?>
 
     <?php
     // Цена
-    $block  = advert_compare_renderRow($advertisement, 'price');
+    $block  = adv_compare_renderRow($advertisement, 'price');
     if($block != '') echo $block;
 
     // Краткое описание
-    $block  = advert_compare_renderRow($advertisement, 'description');
+    $block  = adv_compare_renderRow($advertisement, 'description');
     if($block != '') echo $block;
 
     /**
@@ -72,7 +72,7 @@ if ($this->totalitems == 0) { ?>
     if(!empty($cot_extrafields[cot::$db->advboard])) {
         // Extra fields for ads
         foreach ($cot_extrafields[cot::$db->advboard] as $exfld) {
-            $block  = advert_compare_renderRow($advertisement, $exfld['field_name']);
+            $block  = adv_compare_renderRow($advertisement, $exfld['field_name']);
             if($block != '') echo $block;
         }
     }
