@@ -9,21 +9,28 @@
 offset = offset || 0;
 offsetTop = offsetTop || 0;
 
-function new_sticky_relocate() {
+var compareHeader = $('<tr>').attr({id: 'compare-header2'}).css({display:'none', position: 'fixed', top: offsetTop});
+
+var new_sticky_relocate = function () {
     var window_top = $(window).scrollTop();
     var div_top = $('#compare-table').offset().top;
     var div_width = $('#compare-table').width();
 
     // position static
+    $(window).unbind('scroll', new_sticky_relocate);
 
     if ((window_top + offset) > div_top) {
-        $('#compare-header').addClass('stick').css({position: 'fixed', top: offsetTop}).width(div_width);
+        $('#compare-header2').addClass('stick').css({display: 'block'}).width(div_width);
     } else {
-        $('#compare-header').removeClass('stick').css('position', 'static');
+        $('#compare-header2').removeClass('stick').css({display:'none'});
     }
-}
+
+    $(window).bind('scroll', new_sticky_relocate);
+};
 
 $(function() {
-    $(window).scroll(new_sticky_relocate);
+    var origHeader = $('#compare-header');
+    compareHeader.html(origHeader.html()).insertAfter(origHeader);
+    $(window).bind('scroll', new_sticky_relocate);
     new_sticky_relocate();
 });

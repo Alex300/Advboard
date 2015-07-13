@@ -8,11 +8,12 @@
  * You can use this styles for compare table on compare page
  */
 
-tr#compare-header, tr#compare-header:hover {
+tr#compare-header, tr#compare-header:hover,
+tr#compare-header2, tr#compare-header2:hover {
     background: #ffffff !important;
     border-bottom: 2px solid #E4EBF0;
     z-index: 1000;
 }
-tr#compare-header.stick{
+tr#compare-header2.stick{
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 5px rgba(0, 0, 0, 0.075);
 }
