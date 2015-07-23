@@ -318,6 +318,7 @@ class advboard_controller_Main
         $view->category = $category;
         $view->subCategories = $subCategories;
         $view->condition = $condition;
+        $view->order = $order;
         $view->advertisement = $advertisement;
         $view->totalitems = $totallines;
         $view->allowComments = $allowComments;
