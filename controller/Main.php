@@ -317,6 +317,7 @@ class advboard_controller_Main
         $view->page_title = htmlspecialchars($category['title']);
         $view->category = $category;
         $view->subCategories = $subCategories;
+        $view->condition = $condition;
         $view->advertisement = $advertisement;
         $view->totalitems = $totallines;
         $view->allowComments = $allowComments;
