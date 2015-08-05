@@ -13,11 +13,14 @@ Hooks=header.tags
  */
 defined('COT_CODE') or die('Wrong URL.');
 
-if (!COT_AJAX && defined('COT_ADMIN') && $cfg['admintheme'] == 'cpanel'){
+if (!COT_AJAX && defined('COT_ADMIN') && cot::$cfg['admintheme'] == 'cpanel'){
+
+    require_once cot_langfile('advboard', 'module');
 
     $admin_MenuUser['advboard'] = array(
         'title' => cot::$L['advboard_my_ads'],
         'url' => cot_url('advboard', array('m'=>'user')),
         'icon_class' => 'fa fa-file-text',
     );
+
 }
