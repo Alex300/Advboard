@@ -641,7 +641,7 @@ class advboard_controller_Main
                     if ($email == '') cot_error(cot::$L['advboard_err_noemail'], 'email');
                 }
                 if($email != '') {
-                    $tmp = advert_checkEmail($email);
+                    $tmp = adv_checkEmail($email);
                     if($tmp !== true) cot_error($tmp, 'email');
                 }
 
