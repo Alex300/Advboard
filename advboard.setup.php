@@ -13,7 +13,7 @@ Lock_guests=12345A
 Auth_members=RW
 Requires_modules=users
 Recommends_modules=files
-Requires_plugins=lib
+Requires_plugins=cotontilib
 Recommends_plugins=regioncity
 [END_COT_EXT]
 
