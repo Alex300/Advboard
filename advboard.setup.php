@@ -13,7 +13,7 @@ Lock_guests=12345A
 Auth_members=RW
 Requires_modules=users
 Recommends_modules=files
-Requires_plugins=cotonti-lib
+Requires_plugins=lib
 Recommends_plugins=regioncity
 [END_COT_EXT]
 
