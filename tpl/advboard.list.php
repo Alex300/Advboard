@@ -35,7 +35,7 @@ $this->displayMessages();
                 <?php if(cot::$usr['isadmin'] && $this->category['id'] > 0) { ?>
                 <a href="<?=cot_url('admin', array('m'=>'structure', 'n'=>'advboard', 'id'=>$this->category['id']))?>"
                     class="btn btn-info btn-sm">
-                    <span class="glyphicon glyphicon-folder-open"></span> &nbsp;<?=cot::$L['advboard_edit_category']?></a></a>
+                    <span class="glyphicon glyphicon-folder-open"></span> &nbsp;<?=cot::$L['advboard_edit_category']?></a>
                 <?php } ?>
 
                 <a href="<?=$this->addNewUrl?>" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span>
