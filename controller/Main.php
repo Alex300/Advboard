@@ -414,8 +414,11 @@ class advboard_controller_Main
 
         $allowComments = cot_plugin_active('comments');
         if($allowComments) {
-            if(!isset(cot::$cfg['advboard']['cat_'.$advert->category])) $allowComments = false;
-            $allowComments = cot::$cfg['advboard']['cat_'.$advert->category]['enable_comments'];
+            if(!isset(cot::$cfg['advboard']['cat_'.$advert->category])) {
+                $allowComments = false;
+            } else {
+                $allowComments = cot::$cfg['advboard']['cat_' . $advert->category]['enable_comments'];
+            }
         }
 
 
