@@ -324,6 +324,12 @@ class advboard_model_Advert extends Som_Model_Abstract
         return cot_confirm_url(cot_url('advboard', $urlParams), 'advboard', $msg_key);
     }
 
+    public function getText() {
+        if($this->_data['text'] == '') return '';
+
+        return cot_parse($this->_data['text']);
+    }
+
     public function getTextCut(){
         global $structure;
 
