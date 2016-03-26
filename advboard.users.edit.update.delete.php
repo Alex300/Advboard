@@ -17,7 +17,7 @@ require_once cot_incfile('advboard', 'module');
 
 // Удалить все объявления пользователя
 $condition = array(array('user', $id));
-$advertisement = advboard_model_Advert::find($condition, 20, $i, array(array('id', 'ASC')));
+$advertisement = advboard_model_Advert::find($condition);
 if(!empty($advertisement)) {
     foreach($advertisement as $advert) {
         $advert->delete();
