@@ -10,7 +10,7 @@ Tags=users.details.tpl:{USERS_DETAILS_ADVERT_SUBMITNEW}, {USERS_DETAILS_ADVERT_S
  *
  * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
- * @copyright (c) 2015 Portal30 Studio http://portal30.ru
+ * @copyright (c) Portal30 Studio http://portal30.ru
  */
 defined('COT_CODE') or die('Wrong URL');
 
