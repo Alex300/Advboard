@@ -118,7 +118,7 @@ class advboard_model_Advert extends Som_Model_Abstract
     public function getOwner(){
         if(is_null($this->_owner)){
             if($this->_data['user'] > 0){
-                $this->_owner = cot_user_data($this->_data['created_by']);
+                $this->_owner = cot_user_data($this->_data['user']);
                 if(empty($this->_owner)){
                     $this->_owner = array(
                         'user_id' => null,
