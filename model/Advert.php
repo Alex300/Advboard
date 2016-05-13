@@ -97,7 +97,6 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
     {
         parent::__clone();
         
-        $this->_oldData = array();
         $this->_owner = null;
 
         $this->_data['id'] = null;
