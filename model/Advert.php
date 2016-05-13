@@ -577,7 +577,7 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
      * Уведомление администратору
      */
     public function notifyAdmin() {
-        global $db_users, $L;
+        global $L;
 
         $usrUrl = cot_url('users', 'm=details&id='.cot::$usr['id'].'&u='.cot::$usr['name'], '', true);
         if (!cot_url_check($usrUrl)) $usrUrl = COT_ABSOLUTE_URL . $usrUrl;
@@ -599,7 +599,7 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
         //$mailBody = $mailView->render
 
         // TODO на будущее: можно в конфиг добавить настройку со списком e-mail'ов на которые нужно рассылать уведомления
-        $admEmails = cot::$db->query("SELECT user_email, user_lang FROM $db_users WHERE user_maingrp=5")->fetchAll(PDO::FETCH_KEY_PAIR);
+        $admEmails = cot::$db->query("SELECT user_email, user_lang FROM ".cot::$db->users." WHERE user_maingrp=5")->fetchAll(PDO::FETCH_KEY_PAIR);
 
         $tmp = trim(cot::$cfg['adminemail']);
         if ($tmp != '' && !array_key_exists($tmp, $admEmails)) {
@@ -631,7 +631,7 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
     }
 
     public function notifyUserModerated() {
-        global $db_users, $L;
+        global $L;
 
         $advertUrl = $this->getUrl();
         if (!cot_url_check($advertUrl)) $advertUrl = COT_ABSOLUTE_URL . $advertUrl;
