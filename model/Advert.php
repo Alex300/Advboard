@@ -55,7 +55,7 @@ if(empty($GLOBALS['db_advboard'])) {
  *
  * @property int $expireStatus
  */
-class advboard_model_Advert extends Som_Model_Abstract
+class advboard_model_Advert extends Som_Model_ActiveRecord
 {
     /**
      * @var Som_Model_Mapper_Abstract
@@ -85,13 +85,18 @@ class advboard_model_Advert extends Som_Model_Abstract
 
     /**
      * Static constructor
+     * @param string $db Data base connection config name
      */
-    public static function __init($db = 'db'){
+    public static function __init($db = 'db')
+    {
         static::$_tbname = cot::$db->advboard;
         parent::__init($db);
     }
 
-    public function __clone(){
+    public function __clone()
+    {
+        parent::__clone();
+        
         $this->_oldData = array();
         $this->_owner = null;
 
@@ -115,7 +120,8 @@ class advboard_model_Advert extends Som_Model_Abstract
      * Пользователь - Владелец объявления
      * @return array
      */
-    public function getOwner(){
+    public function getOwner()
+    {
         if(is_null($this->_owner)){
             if($this->_data['user'] > 0){
                 $this->_owner = cot_user_data($this->_data['user']);

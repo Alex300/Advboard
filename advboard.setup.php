@@ -4,10 +4,10 @@
 Code=advboard
 Name=Ads board
 Description=Ads board module for Cotonti Siena
-Version=3.0.0
-Date=2015-07-01
-Author=Kalnov Alexey    (kalnovalexey@yandex.ru)
-Copyright=(с) 2011-2015 Portal30 Studio http://portal30.ru
+Version=3.0.1
+Date=May 13, 2016
+Author=Kalnov Alexey (kalnovalexey@yandex.ru)
+Copyright=(с) 2011-2016 Portal30 Studio http://portal30.ru
 Auth_guests=R
 Lock_guests=12345A
 Auth_members=RW
@@ -54,8 +54,7 @@ metadesc=44:string:::
  *
  * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
- * @copyright (c) 2011-2015 Portal30 Studio http://portal30.ru
- *
+ * @copyright (c) 2011-2016 Portal30 Studio http://portal30.ru
  */
 defined('COT_CODE') or die('Wrong URL');
 
