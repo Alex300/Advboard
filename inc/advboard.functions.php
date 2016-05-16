@@ -8,14 +8,14 @@
  */
 defined('COT_CODE') or die('Wrong URL.');
 
-cot::$db->registerTable('advboard');
-cot_extrafields_register_table('advboard');
-
 // Requirements
+require_once cot_incfile('extrafields');
 require_once cot_langfile('advboard', 'module');
 require_once  cot_incfile('advboard', 'module', 'resources');
-
 if(cot_module_active('pm')) require_once  cot_incfile('pm', 'module');
+
+cot::$db->registerTable('advboard');
+cot_extrafields_register_table('advboard');
 
 /**
  * Returns possible values for category sorting order
