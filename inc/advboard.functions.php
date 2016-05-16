@@ -9,9 +9,9 @@
 defined('COT_CODE') or die('Wrong URL.');
 
 // Requirements
-require_once cot_incfile('extrafields');
 require_once cot_langfile('advboard', 'module');
-require_once  cot_incfile('advboard', 'module', 'resources');
+require_once cot_incfile('advboard', 'module', 'resources');
+require_once cot_incfile('extrafields');
 if(cot_module_active('pm')) require_once  cot_incfile('pm', 'module');
 
 cot::$db->registerTable('advboard');
