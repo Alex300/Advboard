@@ -657,6 +657,8 @@ class advboard_controller_Main
                 }
             }
 
+            if(isset($_POST['price'])) $_POST['price'] = (float)str_replace(',', '.', $_POST['price']);
+
             $advert->setData($_POST);
             $advert->begin = $begin;
             $advert->expire = $expire;
