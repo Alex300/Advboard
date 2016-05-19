@@ -8,6 +8,9 @@
  */
 defined('COT_CODE') or die('Wrong URL.');
 
+global $R;
+if(empty($R['list_more']) && cot_module_active('page')) require_once cot_incfile('page', 'module', 'resources');
+
 class advboard_controller_Widget
 {
     public static function adsList($condition = array(), $tpl = 'advboard.widget.list', $items = 0, $order = '',

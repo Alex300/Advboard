@@ -1,11 +1,15 @@
 <?php
 /**
+ * Ads board module for Cotonti Siena
  * Ads list template
  *
  * @package Advboard
- * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
+ * @author Kalnov Alexey <kalnovalexey@yandex.ru>
  * @copyright Portal30 Studio http://portal30.ru
  */
+
+global $R;
+if(empty($R['list_more']) && cot_module_active('page')) require_once cot_incfile('page', 'module', 'resources');
 
 /** @var advboard_model_Advert[] $advertisement */
 $advertisement = $this->advertisement;

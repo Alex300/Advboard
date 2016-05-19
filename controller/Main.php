@@ -27,7 +27,81 @@ class advboard_controller_Main
         }
 
         // Main Page
+        cot::$out['subtitle'] = cot::$L['advboard_ads_board'];
 
+        $urlParams = array();
+
+        /* === Hook === */
+        foreach (cot_getextplugins('advboard.main') as $pl) {
+            include $pl;
+        }
+        /* ===== */
+
+        $kk = 0;
+        $cats = array();
+        if(!empty(cot::$structure['advboard'])) {
+            $cats = cot_structure_children('advboard', '', false, false, true, false);
+        }
+
+        /* === Hook - Part1 : Set === */
+        $extp = cot_getextplugins('advboard.list.rowcat.loop');
+        /* ===== */
+        
+        $categories = array();
+        foreach ($cats as $x) {
+            $kk++;
+            $cat_childs = cot_structure_children('advboard', $x);
+            $sub_count = 0;
+            foreach ($cat_childs as $cat_child) {
+                $sub_count += (int)cot::$structure['advboard'][$cat_child]['count'];
+            }
+
+            $sub_url_path = $urlParams;
+            $sub_url_path['c'] = $x;
+            $categories[$x] =  cot::$structure['advboard'][$x];
+            $categories[$x]['config'] = cot::$cfg['advboard']['cat_' . $x];
+            $categories[$x]['code'] = $x;
+            $categories[$x]['count'] = $sub_count;
+            $categories[$x]['num'] = $kk;
+
+            // Extra fields for structure
+            if(!empty(cot::$extrafields[cot::$db->structure])) {
+                foreach (cot::$extrafields[cot::$db->structure] as $exfld) {
+                    $uname = $exfld['field_name'];
+                    $val = cot::$structure['advboard'][$x][$exfld['field_name']];
+                    $categories[$x][$uname . '_title'] = isset(cot::$L['structure_' . $exfld['field_name'] . '_title']) ?
+                        cot::$L['structure_' . $exfld['field_name'] . '_title'] : $exfld['field_description'];
+                    $categories[$x][$uname] = cot_build_extrafields_data('structure', $exfld, $val);
+                    $categories[$x][$uname . '_value'] = $val;
+                }
+            }
+            /* === Hook - Part2 : Include === */
+            foreach ($extp as $pl) {
+                include $pl;
+            }
+            /* ===== */
+        }
+
+        $crumbs = array(cot::$L['advboard_ads_board']);
+
+        $breadcrumbs = '';
+        if(!empty($crumbs)) $breadcrumbs = cot_breadcrumbs($crumbs, cot::$cfg['homebreadcrumb'], true);
+
+        $view = new View();
+        $view->breadcrumbs = $breadcrumbs;
+        $view->page_title = cot::$L['advboard_ads_board'];
+        $view->categories = $categories;
+
+        // Main page
+        $template = array('advboard');
+        
+        /* === Hook === */
+        foreach (cot_getextplugins('advboard.main.view') as $pl) {
+            include $pl;
+        }
+        /* ===== */
+
+        return $view->render($template);
     }
 
     /**
