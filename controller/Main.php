@@ -561,8 +561,6 @@ class advboard_controller_Main
     }
 
     public function editAction() {
-        global $structure, $cot_extrafields, $db_structure;
-
         $id = cot_import('id', 'G', 'INT');           // id Объявления
         $c = cot_import('c', 'G', 'TXT');
         $act =  cot_import('act', 'G', 'ALP');
@@ -578,22 +576,37 @@ class advboard_controller_Main
         list(cot::$usr['auth_read'], cot::$usr['auth_write'], cot::$usr['isadmin']) = cot_auth('advboard', 'any');
         cot_block(cot::$usr['auth_write']);
 
-        if (!$c || !isset($structure['advboard'][$c])) {
+        if (!empty($c) && !isset(cot::$structure['advboard'][$c])) {
             cot_die_message(404, TRUE);
         }
 
-        $category = $structure['advboard'][$c];
+        if(empty($c)) {
+            // Ищем категорию, на которую есть права на запись
+            if(!empty(cot::$structure['advboard'])) {
+                foreach (cot::$structure['advboard'] as $catCode => $catRow) {
+                    $auth_write = cot_auth('advboard', $catCode, 'W');
+                    if ($auth_write) {
+                        cot_redirect(cot_url('advboard', array('c' => $catCode, 'a' => 'edit'), '', true));
+                    }
+                }
+            }
+            cot_die_message(404, TRUE);
+        }
+
+        $category = cot::$structure['advboard'][$c];
         $category['config'] = cot::$cfg['advboard']['cat_' . $c];
         $category['code'] = $c;
 
         // Extra fields for structure
-        foreach ($cot_extrafields[$db_structure] as $exfld) {
-            $uname = $exfld['field_name'];
-            $val = $structure['advboard'][$c][$exfld['field_name']];
-            $category[$uname.'_title'] = isset(cot::$L['structure_'.$exfld['field_name'].'_title']) ?
-                cot::$L['structure_'.$exfld['field_name'].'_title'] : $exfld['field_description'];
-            $category[$uname] = cot_build_extrafields_data('structure', $exfld, $val);
-            $category[$uname.'_value'] = $val;
+        if(!empty(cot::$extrafields[cot::$db->structure])) {
+            foreach (cot::$extrafields[cot::$db->structure] as $exfld) {
+                $uname = $exfld['field_name'];
+                $val = cot::$structure['advboard'][$c][$exfld['field_name']];
+                $category[$uname . '_title'] = isset(cot::$L['structure_' . $exfld['field_name'] . '_title']) ?
+                    cot::$L['structure_' . $exfld['field_name'] . '_title'] : $exfld['field_description'];
+                $category[$uname] = cot_build_extrafields_data('structure', $exfld, $val);
+                $category[$uname . '_value'] = $val;
+            }
         }
 
         $published = 0;
@@ -608,7 +621,7 @@ class advboard_controller_Main
             if(!cot::$usr['isadmin']) {
                 if ($advert->user != cot::$usr['id']) cot_die_message(404, TRUE);
             }
-            if($c != $advert->category && isset($structure['advboard'][$advert->category])) {
+            if($c != $advert->category && isset(cot::$structure['advboard'][$advert->category])) {
                 $tmp = array('c' => $advert->category, 'a' => 'edit', 'id' => $advert->id);
                 if(!empty($act)) $tmp['act'] = $act;
                 cot_redirect(cot_url('advboard', array('c' => $advert->category, 'a' => 'edit', 'id' => $advert->id), '', true));
@@ -628,14 +641,13 @@ class advboard_controller_Main
         //Проверим права на категорию:
         list(cot::$usr['auth_read'], cot::$usr['auth_write'], cot::$usr['isadmin'], cot::$usr['auth_upload']) = cot_auth('advboard', $c, 'RWA1');
 
-        if ($structure['advboard'][$c]['locked'] && !cot::$usr['isadmin']) {
+        if (cot::$structure['advboard'][$c]['locked'] && !cot::$usr['isadmin']) {
             cot_die_message(602, TRUE);
 
         } elseif($advert->id == 0) {
-
-            // Если у пользователя нет прав на подачу объявления, то ищем категорию куда он может подать оьбъявление
+            // Если у пользователя нет прав на подачу объявления, то ищем категорию куда он может подать объявление
             if(!cot::$usr['auth_write']) {
-                foreach($structure['advboard'] as $catCode => $catRow) {
+                foreach(cot::$structure['advboard'] as $catCode => $catRow) {
                     $auth_write = cot_auth('advboard', $catCode, 'W');
                     if($auth_write) cot_redirect(cot_url('advboard', array('c' => $catCode, 'a' => 'edit'), '', true));
                 }
@@ -934,9 +946,9 @@ class advboard_controller_Main
                 'label' => cot::$L['advboard_period']
             ),
         );
-        if(!empty($cot_extrafields[cot::$db->advboard])) {
+        if(!empty(cot::$extrafields[advboard_model_Advert::tableName()])) {
             // Extra fields for ads
-            foreach ($cot_extrafields[cot::$db->advboard] as $exfld) {
+            foreach (cot::$extrafields[advboard_model_Advert::tableName()] as $exfld) {
                 $fName = $exfld['field_name'];
                 $formElements[$fName] = array(
                     'element' => cot_build_extrafields($fName, $exfld, $advert->rawValue($fName)),
@@ -1033,7 +1045,7 @@ class advboard_controller_Main
         }
         /* ===== */
 
-        return $view->render(array('advboard', 'edit', $structure['advboard'][$c]['tpl']));
+        return $view->render(array('advboard', 'edit', cot::$structure['advboard'][$c]['tpl']));
     }
 
     /**
