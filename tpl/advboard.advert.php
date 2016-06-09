@@ -119,8 +119,8 @@ echo $this->breadcrumbs;
 
                         <div class="row">
                             <div class="col-xs-12 col-md-6">
-                                <?php if(!empty($advert->city)) { ?>
-                                    <div><?=cot::$L['advboard_city']?>: <?=$advert->city?></div>
+                                <?php if(!empty($advert->cityName)) { ?>
+                                    <div><?=cot::$L['advboard_city']?>: <?=$advert->cityName?></div>
                                 <?php }
 
                                 if(!empty($advert->phone)) { ?>

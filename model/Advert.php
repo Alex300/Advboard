@@ -46,6 +46,7 @@ if(empty($GLOBALS['db_advboard'])) {
  *
  * ==== Динамические свойства ====
  * @property array $owner
+ * @property string $cityName       Название города с учетом города владельца объявления
  * @property string $url
  * @property string $editUrl
  * @property string $deleteUrl
@@ -176,7 +177,7 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
 
     }
 
-    public function getCity() {
+    public function getCityName() {
         $cityName = '';
         $owner = $this->getOwner();
 
@@ -192,8 +193,8 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
         return $cityName;
     }
 
-    public function issetCity(){
-        $cityName = $this->getCity();
+    public function issetCityName(){
+        $cityName = $this->getCityName();
 
         return !empty($cityName);
     }
@@ -215,7 +216,7 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
     }
 
     public function issetPhone(){
-        $phone = $this->getCity();
+        $phone = $this->getPhone();
 
         return !empty($phone);
     }
@@ -846,7 +847,7 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
                 'link' =>
                     array(
                         'model' => 'regioncity_model_City',
-                        'relation' => SOM::TO_ONE_NULL,
+                        'relation' => Som::TO_ONE_NULL,
                         'label' => 'title',
                     ),
             );
