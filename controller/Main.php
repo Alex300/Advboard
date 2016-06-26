@@ -137,9 +137,9 @@ class advboard_controller_Main
 
 
         // Фильтры для модератора
-        $mf = array('period' => 0, 'state' => -2);
+        $mf = array('period' => '0', 'state' => -2);
         if(cot::$usr['isadmin']) {
-            $mf['period'] = isset($_GET['mf']['period']) ? cot_import($_GET['mf']['period'], 'D', 'ALP') : 0;
+            $mf['period'] = isset($_GET['mf']['period']) ? cot_import($_GET['mf']['period'], 'D', 'ALP') : '0';
             $mf['state'] = isset($_GET['mf']['state']) ? cot_import($_GET['mf']['state'], 'D', 'INT') : -2;
         }
 
