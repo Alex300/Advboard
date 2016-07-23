@@ -4,16 +4,27 @@
  *
  * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
- * @copyright (c) 2015 Portal30 Studio http://portal30.ru
+ * @copyright (c) 2015-2016 Portal30 Studio http://portal30.ru
  */
 defined('COT_CODE') or die('Wrong URL.');
 
-global $R;
-if(empty($R['list_more']) && cot_module_active('page')) require_once cot_incfile('page', 'module', 'resources');
+if(empty(cot::$R['list_more']) && cot_module_active('page')) require_once cot_incfile('page', 'module', 'resources');
 
 class advboard_controller_Widget
 {
-    public static function adsList($condition = array(), $tpl = 'advboard.widget.list', $items = 0, $order = '',
+    /**
+     * Widget to display ads list or single adv
+     *
+     * @param array     $condition
+     * @param string    $tpl
+     * @param int       $items
+     * @param string    $order
+     * @param bool      $onlyActive
+     * @param string    $pagination
+     * @param array     $params
+     * @return string
+     */
+    public static function widget($condition = array(), $tpl = 'advboard.widget.list', $items = 0, $order = '',
                                    $onlyActive = true, $pagination = 'pld', $params = array()) {
 
         // Get pagination number if necessary
@@ -91,6 +102,15 @@ class advboard_controller_Widget
         $view->pagenav = $pagenav;
 
         return $view->render($tpl);
+    }
+
+    /**
+     * @deprecated use static::widget()
+     */
+    public static function adsList($condition = array(), $tpl = 'advboard.widget.list', $items = 0, $order = '',
+        $onlyActive = true, $pagination = 'pld', $params = array()) {
+
+        return static::widget($condition, $tpl, $items, $order, $onlyActive, $pagination, $params);
     }
 
     public static function compare() {
