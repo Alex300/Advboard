@@ -18,8 +18,7 @@
 // Error and message handling
 echo $this->displayMessages();
 
-// Shop Cart
-// Currency Selector
+// Currency Selector etc.
 
 // Root categories list
 if(!empty($this->categories)) {
@@ -37,3 +36,5 @@ if(!empty($this->categories)) {
         </article>
     <?php }
 }
+
+// Last ads list widget etc.
