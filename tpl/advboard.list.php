@@ -100,9 +100,10 @@ $this->displayMessages();
         // Список объявлений
         if(!empty($advertisement)) {
             foreach ($advertisement as $advRow) {
-                //$created =
+                $itemClass = 'list-row row list-row-advert';
+                if($advRow->sticky) $itemClass .= ' list-row-advert-sticky';
                 ?>
-                <article class="list-row row">
+                <article class="<?=$itemClass?>">
                     <div class="col-xs-12">
                         <?php if(cot_module_active('files') && cot_files_count('advboard',$advRow->id,'','images') > 0) {
                             $file = cot_files_get('advboard', $advRow->id, '');
