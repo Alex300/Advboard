@@ -98,7 +98,7 @@ class advboard_controller_Widget
         /* ===== */
 
         $view->advertisement = $advertisement;
-        $view->totalitems = $totallines;
+        $view->totalItems = $totallines;
         $view->pagenav = $pagenav;
 
         return $view->render($tpl);
@@ -113,15 +113,20 @@ class advboard_controller_Widget
         return static::widget($condition, $tpl, $items, $order, $onlyActive, $pagination, $params);
     }
 
-    public static function compare() {
+    /**
+     * Ads compare widget
+     * @param string $tpl
+     * @return string
+     */
+    public static function compare($tpl = 'advboard.widget.compare') {
         $totallines = 0;
         if(!empty($_SESSION['advboard_compare'])) $totallines = count($_SESSION['advboard_compare'][cot::$sys['site_id']]);
 
-        $tpl = array('advboard', 'widget', 'compare', );
+        if(empty($tpl)) $tpl = array('advboard', 'widget', 'compare');
 
         $view = new View();
         $view->advertisement = $_SESSION['advboard_compare'][cot::$sys['site_id']];
-        $view->totalitems = $totallines;
+        $view->totalItems = $totallines;
 
         return $view->render($tpl);
     }
