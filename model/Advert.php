@@ -35,8 +35,8 @@ if(empty($GLOBALS['db_advboard'])) {
  * @property int    $begin          Дата начала публикации
  * @property int    $expire         Дата окончания публикации
  * @property int    $sort           Поле для сортировки
- * @property int    $user           id Владельца
- * @property string $views          Количество просмотров
+ * @property int    $user           Owner ID
+ * @property string $views          Views count
  * @property string $admin_notified Время последнего уведомления администратора об измененеии объявления
  *
  * @property string $created        Create date
@@ -797,44 +797,44 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
                     'type' => 'int',
                     'default' => 0,
                     'nullable' => false,
-                    'description' => 'id Владельца',
+                    'description' => 'Owner ID',
                 ),
             'views' =>
                 array (
                     'type' => 'mediumint',
                     'length' => 8,
                     'default' => 0,
-                    'description' => 'Количество просмотров',
+                    'description' => 'Views count',
                 ),
             'admin_notified' =>
                 array (
                     'type' => 'datetime',
                     'default' => '1970-01-01 00:00:01',
-                    'description' => 'Дата создания',
+                    //'description' => '',
                 ),
             'created' =>
                 array (
                     'type' => 'datetime',
                     'default' => date('Y-m-d H:i:s', cot::$sys['now']),
-                    'description' => 'Дата создания',
+                    'description' => 'Create date',
                 ),
             'created_by' =>
                 array (
                     'type' => 'int',
                     'default' => cot::$usr['id'],
-                    'description' => 'Кем создано',
+                    'description' => 'Who created',
                 ),
             'updated' =>
                 array (
                     'type' => 'datetime',
                     'default' => date('Y-m-d H:i:s', cot::$sys['now']),
-                    'description' => 'Дата обновления',
+                    'description' => 'Last update date',
                 ),
             'updated_by' =>
                 array (
                     'type' => 'int',
                     'default' => cot::$usr['id'],
-                    'description' => 'Кем обновлено',
+                    'description' => 'Who updated',
                 ),
         );
 
