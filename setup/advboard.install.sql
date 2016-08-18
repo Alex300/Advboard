@@ -1,3 +1,11 @@
+/**
+ * Ads board module for Cotonti Siena
+ *
+ * @package Advboard
+ * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
+ * @copyright (c) Portal30 Studio http://portal30.ru
+ */
+
 --
 -- Структура таблицы `cot_advboard`
 --
