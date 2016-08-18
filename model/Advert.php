@@ -39,12 +39,12 @@ if(empty($GLOBALS['db_advboard'])) {
  * @property string $views          Количество просмотров
  * @property string $admin_notified Время последнего уведомления администратора об измененеии объявления
  *
- * @property string $created        Дата создания
- * @property int    $created_by     Кем создано
- * @property string $updated        Дата обновления
- * @property int    $updated_by     Кем обновлено
+ * @property string $created        Create date
+ * @property int    $created_by     Who created
+ * @property string $updated        Last update date
+ * @property int    $updated_by     Who updated
  *
- * ==== Динамические свойства ====
+ * ==== Dynamic properties ====
  * @property array $owner
  * @property string $cityName       Название города с учетом города владельца объявления
  * @property string $url
