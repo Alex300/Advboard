@@ -542,7 +542,6 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
         // Удалить все файлы и изображения
         if(cot_module_active('files')){
             $files = files_model_File::find(array(
-                array('file_source', 'advboard'),
                 array('file_item', $this->_data['id'])
             ));
             if(!empty($files)){
