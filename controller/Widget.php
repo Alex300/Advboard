@@ -119,6 +119,37 @@ class advboard_controller_Widget
      * @return string
      */
     public static function compare($tpl = 'advboard.widget.compare') {
+
+        static $exists = null;
+
+        if(!empty($_SESSION['advboard_compare']) && $_SESSION['advboard_compare'][cot::$sys['site_id']]) {
+            $ids = array_keys($_SESSION['advboard_compare'][cot::$sys['site_id']]);
+
+            $ids[] = 8;
+            $ids[] = 18;
+
+            if(!empty($ids)) {
+                if($exists === null) {
+                    $exists = cot::$db->query("SELECT id FROM " . advboard_model_Advert::tableName() . " WHERE id IN (" .
+                        implode(',', $ids) . ")")->fetchAll(PDO::FETCH_COLUMN);
+
+                    if(empty($exists)) $exists = false;
+                }
+
+                if(empty($exists)) {
+                    unset($_SESSION['advboard_compare']);
+
+                } else {
+                    $del = array_diff($ids, $exists);
+                    if(!empty($del)) {
+                        foreach ($del as $row) {
+                            unset($_SESSION['advboard_compare'][cot::$sys['site_id']][$row]);
+                        }
+                    }
+                }
+            }
+        }
+
         $totallines = 0;
         if(!empty($_SESSION['advboard_compare'])) $totallines = count($_SESSION['advboard_compare'][cot::$sys['site_id']]);
 
