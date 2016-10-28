@@ -1115,9 +1115,11 @@ class advboard_controller_Main
         if(!empty($b)) {
             $b = unserialize(base64_decode($b));
 
-        } elseif(!empty($_SESSION['cot_com_back']) && !empty($_SESSION['cot_com_back']['advboard'])) {
-            $b = $_SESSION['cot_com_back']['advboard'];
-            unset($_SESSION['cot_com_back']['advboard']);
+        } elseif(!empty($_SESSION['cot_come_back']) && !empty($_SESSION['cot_come_back']['advboard'])) {
+            // $_SESSION['cot_com_back'] is used by comments plugin.
+            // There can be a conflict. We should use a different var.
+            $b = $_SESSION['cot_come_back']['advboard'];
+            unset($_SESSION['cot_come_back']['advboard']);
         }
 
         cot_message($msg);
@@ -1164,9 +1166,9 @@ class advboard_controller_Main
         if(!empty($b)) {
             $b = unserialize(base64_decode($b));
 
-        } elseif(!empty($_SESSION['cot_com_back']) && !empty($_SESSION['cot_com_back']['advboard'])) {
-            $b = $_SESSION['cot_com_back']['advboard'];
-            unset($_SESSION['cot_com_back']['advboard']);
+        } elseif(!empty($_SESSION['cot_come_back']) && !empty($_SESSION['cot_come_back']['advboard'])) {
+            $b = $_SESSION['cot_come_back']['advboard'];
+            unset($_SESSION['cot_come_back']['advboard']);
         }
 
         if (empty($b)) {
