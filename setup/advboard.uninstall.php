@@ -13,7 +13,7 @@ global $db_com;
 
 // Удалить все файлы и изображения
 if(cot_module_active('files')){
-    $files = files_model_File::find(array(
+    $files = files_model_File::findByCondition(array(
         array('file_source', 'advboard'),
     ));
     if(!empty($files)){

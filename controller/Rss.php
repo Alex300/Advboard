@@ -43,7 +43,7 @@ class advboard_controller_Rss
             $condition[] = array('category', $c);
         }
 
-        $advertisement = advboard_model_Advert::find($condition, cot::$cfg['rss']['rss_maxitems'], 0, array(array('sort', 'desc')));
+        $advertisement = advboard_model_Advert::findByCondition($condition, cot::$cfg['rss']['rss_maxitems'], 0, array(array('sort', 'desc')));
 
         $t = new XTemplate(cot_tplfile('rss'));
 

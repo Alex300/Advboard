@@ -75,7 +75,7 @@ class advboard_controller_User
         /* ===== */
 
         $totallines = advboard_model_Advert::count($condition);
-        $advertisement = advboard_model_Advert::find($condition, $maxrowsperpage, $d, $order);
+        $advertisement = advboard_model_Advert::findByCondition($condition, $maxrowsperpage, $d, $order);
 
         $addNewUrl = '';
         if((cot::$usr['auth_write'] || cot::$usr['isadmin']) && !empty($structure['advboard'])){
@@ -164,7 +164,7 @@ class advboard_controller_User
                 array('user', 0, '>'),
             );
 
-            $advertisement = advboard_model_Advert::find($condition, 0, 0, array(array('id', 'ASC')));
+            $advertisement = advboard_model_Advert::findByCondition($condition, 0, 0, array(array('id', 'ASC')));
             $cnt = 0;
             if($advertisement) {
                 foreach($advertisement as $advRow) {

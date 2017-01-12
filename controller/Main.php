@@ -127,14 +127,13 @@ class advboard_controller_Main
         }
 
         $sort = cot_import('s', 'G', 'ALP');       // order field name
-        $way = cot_import('w', 'G', 'ALP', 4);    // order way (asc, desc)
+        $way = cot_import('w', 'G', 'ALP', 4);     // order way (asc, desc)
         $maxrowsperpage = (cot::$cfg['advboard']['cat_' . $c]['maxrowsperpage']) ? cot::$cfg['advboard']['cat_' . $c]['maxrowsperpage'] :
             cot::$cfg['advboard']['cat___default']['maxrowsperpage'];
         if($maxrowsperpage < 1) $maxrowsperpage = 1;
 
         list($pg, $d, $durl) = cot_import_pagenav('d', $maxrowsperpage); //page number for pages list
         list($pgc, $dc, $dcurl) = cot_import_pagenav('dc', cot::$cfg['advboard']['maxlistsperpage']);// page number for cats list
-
 
         // Фильтры для модератора
         $mf = array('period' => '0', 'state' => -2);
@@ -248,9 +247,6 @@ class advboard_controller_Main
 
             $moderatorFilters['action'] = cot_url('advboard', $urlParams);
             $moderatorFilters['hidden'] = '';
-            foreach($urlParams as $key => $val) {
-                $moderatorFilters['hidden'] .= cot_inputbox('hidden', $key, $val);
-            }
             $moderatorFilters['reset'] = cot_url('advboard', $urlParams);
         }
 
@@ -280,7 +276,7 @@ class advboard_controller_Main
 
         $totallines = advboard_model_Advert::count($condition);
         $advertisement = null;
-        if($totallines > 0) $advertisement = advboard_model_Advert::find($condition, $maxrowsperpage, $d, $order);
+        if($totallines > 0) $advertisement = advboard_model_Advert::findByCondition($condition, $maxrowsperpage, $d, $order);
 
         $allowComments = cot_plugin_active('comments');
         if($allowComments) {
@@ -368,6 +364,10 @@ class advboard_controller_Main
 
         // Фильтры для модератора
         if(cot::$usr['isadmin']) {
+            foreach($urlParams as $key => $val) {
+                $moderatorFilters['hidden'] .= cot_inputbox('hidden', $key, $val);
+            }
+
             if($mf['period'] != '0')  $urlParams['mf[period]'] = $mf['period'];
             if($mf['state'] != -2)    $urlParams['mf[state]'] = $mf['state'];
         }

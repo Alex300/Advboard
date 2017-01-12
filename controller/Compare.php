@@ -64,7 +64,7 @@ class advboard_controller_Compare
         $totallines = 0;
         if(!empty($condition)) {
             $totallines = advboard_model_Advert::count($condition);
-            if ($totallines > 0) $advertisement = advboard_model_Advert::find($condition, $maxrowsperpage, 0, $order);
+            if ($totallines > 0) $advertisement = advboard_model_Advert::findByCondition($condition, $maxrowsperpage, 0, $order);
         }
 
 
@@ -163,7 +163,7 @@ class advboard_controller_Compare
             exit();
         }
 
-        $advertisement = advboard_model_Advert::find(array(array('id',$ids)));
+        $advertisement = advboard_model_Advert::findByCondition(array(array('id',$ids)));
         if(!$advertisement){
             $ret['error'] = cot::$L['advboard_not_found'];
             echo json_encode($ret);

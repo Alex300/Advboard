@@ -89,7 +89,7 @@ $cnt = advboard_model_Advert::count($condition);
 if($cnt > 0) {
     $i = 0;
     while($i <= $cnt) {
-        $advertisement = advboard_model_Advert::find($condition, 20, $i, $order);
+        $advertisement = advboard_model_Advert::findByCondition($condition, 20, $i, $order);
         if(!$advertisement) break;
         foreach($advertisement as $advert) {
             $i++;

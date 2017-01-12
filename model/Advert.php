@@ -13,9 +13,9 @@ if(empty($GLOBALS['db_advboard'])) {
  *
  * Модель объявления
  *
- * @method static advboard_model_Advert getById($pk);
+ * @method static advboard_model_Advert getById($pk, $staticCache = true);
  * @method static advboard_model_Advert fetchOne($conditions = array(), $order = '')
- * @method static advboard_model_Advert[] find($conditions = array(), $limit = 0, $offset = 0, $order = '');
+ * @method static advboard_model_Advert[] findByCondition($conditions = array(), $limit = 0, $offset = 0, $order = '');
  *
  * @property int    $id             id
  * @property string $alias          Алияс
@@ -541,7 +541,7 @@ class advboard_model_Advert extends Som_Model_ActiveRecord
 
         // Удалить все файлы и изображения
         if(cot_module_active('files')){
-            $files = files_model_File::find(array(
+            $files = files_model_File::findByCondition(array(
                 array('file_source', array('advboard', get_called_class())),
                 array('file_item', $this->_data['id'])
             ));
