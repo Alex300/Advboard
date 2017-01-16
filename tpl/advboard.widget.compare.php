@@ -8,12 +8,12 @@
  */
 ?>
 <script>
-    var compareCnt = <?=$this->totalitems?>;
+    var compareCnt = <?=$this->totalItems?>;
 </script>
 <input type="hidden" name="x" value="<?=cot::$sys['xk']?>" />
 
-<div id="advboard_compare-widget" class="panel panel-default" style="margin-top: 0; margin-bottom: 20px;<?php
-                if($this->totalitems == 0) { echo " display:none"; }?>">
+<div class="advboard_compare-widget panel panel-default" style="margin-top: 0; margin-bottom: 20px;<?php
+                if($this->totalItems == 0) { echo " display:none"; }?>">
     <header class="panel-heading">
         <h3 class="panel-title">
             <a href="<?=cot_url('advboard', 'm=compare')?>"><span class="glyphicon glyphicon-tasks"></span>
@@ -21,9 +21,9 @@
         </h3>
     </header>
     <div class="panel-body" style="padding:5px 10px 10px 10px;">
-        <table id="advboard_compare-widget-rows" class="table table-condensed table-compare">
-            <tr id="advboard_compare-widget-row-tpl" class="compare-widget-row-tpl" style="display: none">
-                <td class="blue width5"><span class="glyphicon glyphicon-chevron-right"></span></td>
+        <table class="table table-condensed table-compare advboard_compare-widget-rows">
+            <tr class="compare-widget-row-tpl advboard_compare-widget-row-tpl" style="display: none">
+                <td class="text-primary width5"><span class="glyphicon glyphicon-chevron-right"></span></td>
                 <td class="compare-widget-row-info">
                     <a href="{COMPARE_URL}">{COMPARE_TITLE}</a>
                     <div class="desc compare-widget-row-description" style="display: none; margin: 0">{COMPARE_DESCRIPTION}</div>
@@ -40,7 +40,7 @@
 
                     ?>
                 <tr id="advboard_compare-widget-row-<?=$advRow['id']?>" class="compare-widget-row">
-                    <td class="blue width5"><span class="glyphicon glyphicon-chevron-right"></span></td>
+                    <td class="text-primary width5"><span class="glyphicon glyphicon-chevron-right"></span></td>
                     <td>
                         <a href="<?=$advRow['url']?>"><?=htmlspecialchars($advRow['title'])?></a>
                         <?php if($advRow['description']) { ?>

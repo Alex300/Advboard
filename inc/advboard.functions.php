@@ -93,6 +93,34 @@ function cot_advboard_auth($cat = null) {
     return $auth;
 }
 
+/**
+ * Get a first crumb title
+ * @return string
+ */
+function cot_advboard_firstCrumbTitle() {
+    if(cot::$cfg['advboard']['firstCrumbText'] != '') return cot::$cfg['advboard']['firstCrumbText'];
+    if(isset(cot::$L['advboard_breadcrumbs_main_title']) && cot::$L['advboard_breadcrumbs_main_title'] != '') {
+        return cot::$L['advboard_breadcrumbs_main_title'];
+    }
+
+    $tmp = cot_advboard_mainTitle();
+    if($tmp != cot::$L['advboard_ads_board']) return $tmp;
+
+    return cot::$L['advboard_ads'];
+}
+
+/**
+ * Get a module main page title
+ * @return string
+ */
+function cot_advboard_mainTitle() {
+    if(cot::$cfg['advboard']['mainTitle'] != '') return cot::$cfg['advboard']['mainTitle'];
+    if(isset(cot::$L['advboard_main_title']) && cot::$L['advboard_main_title'] != '') {
+        return cot::$L['advboard_main_title'];
+    }
+    return cot::$L['advboard_ads_board'];
+}
+
 if(!function_exists('cot_formGroupClass')) {
     /**
      * Класс для элемента формы
@@ -238,7 +266,11 @@ function adv_compare_checkbox($item, $title = null) {
  *                                              'postfix' => постфикс
  * @return string
  */
-function adv_compare_renderRow($compare, $field, $params = array()){
+function adv_compare_renderRow($compare, $field, $params = array())
+{
+    global $cot_countries;
+
+    if (!$cot_countries) include_once cot_langfile('countries', 'core');
 
     $predifined = array();
 
@@ -247,15 +279,14 @@ function adv_compare_renderRow($compare, $field, $params = array()){
 
     if(empty($modelFields)) $modelFields = advboard_model_Advert::fields();
 
-//    if(empty($modelFields[$field]) && !in_array($field, $predifined)) return '';
-
+    $table = advboard_model_Advert::tableName();
 
     $ret = '';
     $found = false;
     $tmpVal = '';
     $style = '';
     if($counter == 0) $style = ' style="width: 130px"';
-    foreach($compare as $item){
+    foreach($compare as $item) {
         $val = $item->$field;
 //        var_dump($val);
         if(!empty($val)) $found = true;
@@ -273,6 +304,7 @@ function adv_compare_renderRow($compare, $field, $params = array()){
                     $val = ($val != 0) ? $val : '';
                     break;
 
+
                 case 'varchar':
                     $val = ($val != '') ? htmlspecialchars($val) : '';
                     break;
@@ -282,6 +314,22 @@ function adv_compare_renderRow($compare, $field, $params = array()){
                 if(isset(cot::$L[$field.'_'.$val])){
                     $val = cot::$L[$field.'_'.$val];
                 }
+            }
+        }
+
+        if(isset(cot::$extrafields[$table]) && isset(cot::$extrafields[$table][$field])) {
+            switch (cot::$extrafields[$table][$field]['field_type']) {
+                case 'country':
+                    $val = ($val != '' && $val != '00' && isset($cot_countries[$val])) ? htmlspecialchars($cot_countries[$val]) : '';
+
+                    if($val != '' && $val != '00') {
+                        $val = htmlspecialchars(isset($cot_countries[$val]) ? $cot_countries[$val] : $val);
+
+                    } else {
+                        $val = '';
+                    }
+
+                    break;
             }
         }
 

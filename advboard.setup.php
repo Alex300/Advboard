@@ -4,10 +4,10 @@
 Code=advboard
 Name=Ads board
 Description=Ads board module for Cotonti Siena
-Version=3.0.1
-Date=May 13, 2016
+Version=3.0.2
+Date=January 16, 2017
 Author=Kalnov Alexey (kalnovalexey@yandex.ru)
-Copyright=(с) 2011-2016 Portal30 Studio http://portal30.ru
+Copyright=(с) 2011-2017 Portal30 Studio http://portal30.ru
 Auth_guests=R
 Lock_guests=12345A
 Auth_members=RW
@@ -19,8 +19,10 @@ Recommends_plugins=regioncity
 
 [BEGIN_COT_EXT_CONFIG]
 firstCrumb=02:radio::1:Add link to advboard Main Page to breadcrumbs
-count_admin=03:radio::0:
-maxlistsperpage=06:select:5,10,15,20,25,30,40,50,60,70,100,200,500:30:Max categories in list
+firstCrumbText=04:string:::
+mainTitle=06:string:::
+count_admin=08:radio::0:
+maxlistsperpage=10:select:5,10,15,20,25,30,40,50,60,70,100,200,500:30:Max categories in list
 periodOrder=15:select:asc,desc:desc:Period order
 notifyAdminNewAdv=16:radio::1:New adv admin notify?
 notifyUserNewComment=17:radio::1:New comment user notify?
@@ -54,7 +56,7 @@ metadesc=44:string:::
  *
  * @package Advboard
  * @author Kalnov Alexey    <kalnovalexey@yandex.ru>
- * @copyright (c) 2011-2016 Portal30 Studio http://portal30.ru
+ * @copyright (c) 2011-2017 Portal30 Studio http://portal30.ru
  */
 defined('COT_CODE') or die('Wrong URL');
 

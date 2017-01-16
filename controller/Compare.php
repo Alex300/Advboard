@@ -75,7 +75,7 @@ class advboard_controller_Compare
         /* ===== */
 
         $crumbs = array();
-        if (cot::$cfg['advboard']['firstCrumb']) $crumbs[] = array(cot_url('advboard'), cot::$L['advboard_ads']);
+        if (cot::$cfg['advboard']['firstCrumb']) $crumbs[] = array(cot_url('advboard'), cot_advboard_firstCrumbTitle());
         $crumbs[] = array(cot_url('advboard', array('m' => 'compare')), cot::$L['advboard_compare']);
 
         $breadcrumbs = '';
@@ -88,7 +88,7 @@ class advboard_controller_Compare
         $view->breadcrumbs = $breadcrumbs;
         $view->page_title = htmlspecialchars(cot::$L['advboard_compare']);
         $view->advertisement = $advertisement;
-        $view->totalitems = $totallines;
+        $view->totalItems = $totallines;
 //        $view->urlParams = $urlParams;
 //        $view->pageUrlParams = $pageUrlParams;
 

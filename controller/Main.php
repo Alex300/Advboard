@@ -27,7 +27,7 @@ class advboard_controller_Main
         }
 
         // Main Page
-        cot::$out['subtitle'] = cot::$L['advboard_ads_board'];
+        cot::$out['subtitle'] = cot_advboard_mainTitle();
 
         $urlParams = array();
 
@@ -82,14 +82,14 @@ class advboard_controller_Main
             /* ===== */
         }
 
-        $crumbs = array(cot::$L['advboard_ads_board']);
+        $crumbs = array(cot_advboard_firstCrumbTitle());
 
         $breadcrumbs = '';
         if(!empty($crumbs)) $breadcrumbs = cot_breadcrumbs($crumbs, cot::$cfg['homebreadcrumb'], true);
 
         $view = new View();
         $view->breadcrumbs = $breadcrumbs;
-        $view->page_title = cot::$L['advboard_ads_board'];
+        $view->page_title = cot_advboard_mainTitle();
         $view->categories = $categories;
 
         // Main page
@@ -359,7 +359,9 @@ class advboard_controller_Main
         $crumbs = array();
         if(!empty($category['id'])) {
             $crumbs = cot_structure_buildpath('advboard', $c);
-            if (cot::$cfg['advboard']['firstCrumb']) array_unshift($crumbs, array(cot_url('advboard'), cot::$L['advboard_ads']));
+            if (cot::$cfg['advboard']['firstCrumb']) {
+                array_unshift($crumbs, array(cot_url('advboard'), cot_advboard_firstCrumbTitle()));
+            }
         }
 
         // Фильтры для модератора
@@ -532,7 +534,7 @@ class advboard_controller_Main
         }
 
         $crumbs = cot_structure_buildpath('advboard', $advert->category);
-        if(cot::$cfg['advboard']['firstCrumb']) array_unshift($crumbs, array(cot_url('advboard'), cot::$L['advboard_ads']));
+        if(cot::$cfg['advboard']['firstCrumb']) array_unshift($crumbs, array(cot_url('advboard'), cot_advboard_firstCrumbTitle()));
         $crumbs[] = (!empty($advert->title)) ? $advert->title : cot::$L['advboard_advert']." #".$advert->id;
 
         $urlParams = array('c' => $advert->category);
@@ -823,7 +825,7 @@ class advboard_controller_Main
         }
 
         $crumbs = cot_structure_buildpath('advboard', $c);
-        if(cot::$cfg['advboard']['firstCrumb']) array_unshift($crumbs, array(cot_url('advboard'), cot::$L['advboard_ads']));
+        if(cot::$cfg['advboard']['firstCrumb']) array_unshift($crumbs, array(cot_url('advboard'), cot_advboard_firstCrumbTitle()));
 
         if(!$id){
             $crumbs[] = $title = cot::$L['advboard_add_new'];

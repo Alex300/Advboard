@@ -21,7 +21,7 @@ echo $this->breadcrumbs;
 // Error and message handling
 $this->displayMessages();
 
-if ($this->totalitems == 0) { ?>
+if ($this->totalItems == 0) { ?>
 <h4 class="margintop20 text-center text-muted"><?=cot::$L['advboard_compare_none']?></h4>
 <?php
 
@@ -81,12 +81,17 @@ if ($this->totalitems == 0) { ?>
     <script>
         <?php
         // There is user fixed top panel width class "navbar navbar-default navbar-fixed-top"
+        /*
         if(cot::$usr['id'] > 0) { ?>
             var offset = 50;
             var offsetTop = '50px';
         <?php } else { ?>
             var offset = 0;
             var offsetTop = 0;
-        <?php } ?>
+        <?php }
+        */
+        ?>
+        var offset = 0;
+        var offsetTop = 0;
     </script>
 <?php }
