@@ -13,7 +13,7 @@ if(empty(cot::$R['list_more']) && cot_module_active('page')) require_once cot_in
 class advboard_controller_Widget
 {
     /**
-     * Widget to display ads list or single adv
+     * Widget to display ads list or single ad
      *
      * @param array     $condition
      * @param string    $tpl
@@ -25,8 +25,8 @@ class advboard_controller_Widget
      * @return string
      */
     public static function widget($condition = array(), $tpl = 'advboard.widget.list', $items = 0, $order = '',
-                                   $onlyActive = true, $pagination = 'pld', $params = array()) {
-
+                                   $onlyActive = true, $pagination = 'pld', $params = array())
+    {
         // Get pagination number if necessary
         if (!empty($pagination)) {
             list($pg, $d, $durl) = cot_import_pagenav($pagination, $items);

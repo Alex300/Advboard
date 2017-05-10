@@ -70,7 +70,7 @@ function cot_advboard_sync($cat) {
 }
 
 /**
- * Update page category code
+ * Update category code
  *
  * @param string $oldcat Old Cat code
  * @param string $newcat New Cat code
@@ -161,6 +161,26 @@ if(!function_exists('array_insert')) {
 }
 
 // ========================================================
+
+/**
+ * Ads list to use with CoTemplate files.
+ *
+ * This is an alias for advboard_controller_Widget::widget()
+ * CoTemplate can't work with classes.
+ *
+ * @param string $condition
+ * @param string $tpl
+ * @param int $items
+ * @param string $order
+ * @param bool $onlyActive
+ * @param string $pagination
+ */
+function advboard_widget($condition = '', $tpl = 'advboard.widget.list', $items = 0, $order = '', $onlyActive = true,
+    $pagination = 'pld')
+{
+    $cond = array(array('SQL', $condition));
+    advboard_controller_Widget::widget($cond, $tpl, $items, $order, $onlyActive, $pagination);
+}
 
 /**
  * Количество объявлений пользователя
