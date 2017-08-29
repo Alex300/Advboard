@@ -4,8 +4,8 @@
 Code=advboard
 Name=Ads board
 Description=Ads board module for Cotonti Siena
-Version=3.0.2
-Date=January 16, 2017
+Version=3.0.3
+Date=August 29, 2017
 Author=Kalnov Alexey (kalnovalexey@yandex.ru)
 Copyright=(с) 2011-2017 Portal30 Studio http://portal30.ru
 Auth_guests=R

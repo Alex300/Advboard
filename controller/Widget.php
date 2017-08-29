@@ -56,8 +56,9 @@ class advboard_controller_Widget
         }
         /* ===== */
 
+        $advertisement = NULL;
         $totallines = advboard_model_Advert::count($condition);
-        $advertisement = advboard_model_Advert::findByCondition($condition, $items, $d, $order);
+        if($totallines > 0) $advertisement = advboard_model_Advert::findByCondition($condition, $items, $d, $order);
 
         // Render pagination
         if(empty($params['module'])) {

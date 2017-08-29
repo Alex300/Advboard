@@ -174,12 +174,13 @@ if(!function_exists('array_insert')) {
  * @param string $order
  * @param bool $onlyActive
  * @param string $pagination
+ * @return string
  */
 function advboard_widget($condition = '', $tpl = 'advboard.widget.list', $items = 0, $order = '', $onlyActive = true,
     $pagination = 'pld')
 {
-    $cond = array(array('SQL', $condition));
-    advboard_controller_Widget::widget($cond, $tpl, $items, $order, $onlyActive, $pagination);
+    $cond = (!empty($condition)) ? array(array('SQL', $condition)) : array();
+    return advboard_controller_Widget::widget($cond, $tpl, $items, $order, $onlyActive, $pagination);
 }
 
 /**
